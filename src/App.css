@@ -1,0 +1,25 @@
+
+*{
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+#root{
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 auto;
+    background-color: #f1f3f5;
+}
+.fa-solid, .fas{
+    font-size: 24px;
+}
+.fa-pills{
+    color: black;
+    font-size: 24px;
+}
+.red {
+    background-color: red !important;
+}
+.green {
+    background-color: green !important;
+}

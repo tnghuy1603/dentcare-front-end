@@ -9,6 +9,7 @@ export const AuthProvider = ({children}) => {
         <AuthContext.Provider value={{accessToken, setAccessToken}}>
             {children}
         </AuthContext.Provider>
+        
     </>
   )
 }

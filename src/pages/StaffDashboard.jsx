@@ -1,8 +1,19 @@
 import React from 'react'
+import Sidebar from '../components/Sidebar'
+import Navbar from '../components/Navbar'
 
-function StaffDashboard() {
+function StaffDashboard({username, role}) {
   return (
-    <div>StaffDashboard</div>
+    <>
+      <div>
+        <Navbar username={username} role={role}/>
+        <Sidebar/>
+      </div>
+      <div>
+        
+      </div>
+      
+    </>
   )
 }
 
