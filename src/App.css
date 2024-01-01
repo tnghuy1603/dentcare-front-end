@@ -284,6 +284,11 @@ tbody tr td{
     font-weight: 600;
 }
 
+.patients-router {
+    color: #111827;
+    text-decoration: none;
+}
+
 @media (max-width:769px) {
     #menu{
        

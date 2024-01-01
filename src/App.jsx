@@ -25,7 +25,7 @@ function App() {
   const getRoles = (jwt) => {
     if (jwt) {
       let decodedJwt = jwtDecode(jwt)
-      console.log(decodedJwt.roles)
+      console.log(decodedJwt)
       return decodedJwt.roles;
     }
     return [];
@@ -44,8 +44,13 @@ function App() {
 
   return (
     <>
-
+      <AdminDashboard/>
       <BrowserRouter>
+        <Routes>
+          <Route path="/patients/:id" element={<PatientDetails/>} />
+        </Routes>
+      </BrowserRouter>
+      {/* <BrowserRouter>
         <Routes>
           <Route path='/dashboard' element={
             roles.find(role => role === 'ROLE_ADMIN') ? (
@@ -71,7 +76,7 @@ function App() {
 
 
         </Routes>
-      </BrowserRouter>
+      </BrowserRouter> */}
 
     </>
   )
