@@ -22,6 +22,7 @@ const PatientProfile = () => {
                     "Authorization": `Bearer ${auth.accessToken}`,
                 },
             });
+            
             // console.log(res.data);
             setPatients(res.data);
         };
@@ -43,7 +44,7 @@ const PatientProfile = () => {
                             <td>#</td>
                             <td>Name</td>
                             <td>Gender</td>
-                            <td>Date of britd</td>
+                            <td>Date of brith</td>
                             <td>Address</td>
                             <td>Phonenumber</td>
                             <td>Email</td>
@@ -122,6 +123,7 @@ const PatientProfile = () => {
                                         <label htmlFor="exampleInputPassword1" className="form-label">Email</label>
                                         <input type="text" className="form-control" id="exampleInputPassword1" />
                                     </div>
+                                    
                                 </div>
                                 <div className="modal-footer">
                                     <button type="button" className="btn btn-secondary" data-bs-dismiss="modal">Close</button>

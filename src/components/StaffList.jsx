@@ -48,10 +48,7 @@ const StaffList = () => {
         fetchBranches();
         fetchStaffs();
     }, []);
-    
-    console.log("Staff", staffs);
-    console.log("Branches", branches);
-    const addStaff = async () => {
+    const handleAdd = async () => {
       console.log(email, name, dob, address, phoneNumber, selectedBranchId);
       const res = await axios.post(`http://localhost:8080/users`, {email, name, password, dob, address, phoneNumber, role: 'ROLE_STAFF', branchId: selectedBranchId}, {
             headers: {
@@ -190,7 +187,7 @@ const StaffList = () => {
             </form>
             <div className="modal-footer">
               <button type="button" className="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-              <button type="button" className="btn btn-primary" onClick={addStaff}>Add</button>
+              <button type="button" className="btn btn-primary" onClick={handleAdd}>Add</button>
             </div>
           </div>
         </div>

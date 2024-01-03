@@ -8,16 +8,19 @@ import DentistProfile from "./DentistProfile";
 import Sidebar from "./Sidebar";
 import { Route, Routes, BrowserRouter } from "react-router-dom";
 import ManageDrug from "./ManageDrug";
-import Statistics from "./Statistic";
+import Statistics from "../Statistics";
 import PatientProfile from "./PatientProfile";
+import Login from "../Login";
 
 const Dashboard = () => {
     return (
         <section id="interface">
             <Header />
+            <Sidebar/>
             <BrowserRouter>
                 <Sidebar/>
                 <Routes>
+                    <Route path="/login" element={<Login/>}/>
                     <Route path="/" element={<Home/>}/>
                     <Route path="/dentist-profile" element={<DentistProfile/>}/>
                     <Route path="/patient-profile" element={<PatientProfile/>}/>

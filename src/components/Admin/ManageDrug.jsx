@@ -1,11 +1,13 @@
 import React from "react";
 import useAuth from "../../hooks/useAuth";
 import { useState, useEffect } from "react";
+import axios from "axios";
 
-const ManageDrug = () => {
+const ManageDrug = ({role}) => {
     const auth = useAuth();
-    const [isAdmin, setIsAdmin] = useState(false);
-    const [isStaff, setIsStaff] = useState(false);
+    const [isAdmin, setIsAdmin] = useState(true);
+    // const [isStaff, setIsStaff] = useState(false);
+    
     const [medicines, setMedicines] = useState([]);
     const [name, setName] = useState('');
     const [description, setDescription] = useState('');
@@ -78,6 +80,7 @@ const ManageDrug = () => {
                                         <a href="#" className="me-4" data-bs-toggle="modal" data-bs-target="#EditModal">Edit</a> &&
                                         <a href="#" type="button" data-bs-toggle="modal" data-bs-target="#DeleteModal">Delete</a>}
                                 </td>
+                                
                             </tr>
                         ))}
                     </tbody>

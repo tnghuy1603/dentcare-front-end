@@ -1,8 +1,10 @@
 import React from "react";
 import useAuth from "../../hooks/useAuth";
 import { useState, useEffect } from "react";
+import axios from "axios";
 
 const ManageStaff = () => {
+    const auth = useAuth();
     const [staffs, setStaffs] = useState([]);
     const [branches, setBranches] = useState([])
     const [name, setName] = useState('');
@@ -43,7 +45,6 @@ const ManageStaff = () => {
     return (
         <>
             <h3 className="i-name">Manage Staffs</h3>
-
             <div className="board">
                 <table width="100%">
                     <thead>

@@ -2,22 +2,26 @@ import { useState } from 'react'
 import './App.css'
 import { BrowserRouter, Route, Routes } from 'react-router-dom'
 import Footer from './components/Footer'
-import Navbar from './components/Navbar'
-import AdminDashboard from './pages/AdminDashboard'
-import StaffDashboard from './pages/StaffDashboard'
-import DentistDashboard from './pages/DentistDashboard'
 import Login from './components/Login'
 import PrivateRoute from './components/PrivateRoute'
 
 import { jwtDecode } from 'jwt-decode'
 import useAuth from './hooks/useAuth'
 import PatientList from './components/PatientList'
-import PatientDetails from './components/PatientDetails'
-import TreatmentPlanDetails from './components/TreatmentPlanDetails'
-
+import Dashboard from './components/Dashboard'
+import Sidebar from './components/Sidebar'
+import Header from './components/Header'
 import MedicineList from './components/MedicineList'
-import DentistList from './components/DentistList'
+import PatientDetails from './components/PatientProfile'
 import StaffList from './components/StaffList'
+import DentistList from './components/DentistList'
+import ManageDentists from './components/ManageDentists'
+import ManageStaff from './components/ManageStaff'
+import ManagePatients from './components/ManagePatients'
+import ManageAppointments from './components/ManageAppointments'
+import TreatmentPlanDetails from './components/TreatmentPlanDetails'
+import AddTreatmentPlan from './components/AddTreatmentPlan'
+
 
 
 
@@ -44,12 +48,42 @@ function App() {
 
   return (
     <>
-      <AdminDashboard/>
-      <BrowserRouter>
-        <Routes>
-          <Route path="/patients/:id" element={<PatientDetails/>} />
-        </Routes>
-      </BrowserRouter>
+        <BrowserRouter>
+          <Routes>
+            <Route path='/dashboard' element={<PrivateRoute>
+                <Dashboard/>
+            </PrivateRoute>}/>
+            <Route path="/login" element={<Login/>}/>
+            <Route path='/patients' element={
+              <PrivateRoute>
+                <ManagePatients/>
+              </PrivateRoute>
+            } />
+            <Route path='/appointments' element={
+              <PrivateRoute>
+                <ManageAppointments/>
+              </PrivateRoute>
+            }/>
+            <Route path='/medicines' element={
+              <PrivateRoute>
+                <MedicineList/>
+              </PrivateRoute>
+            } />
+            <Route path='/dentists' element={
+                <PrivateRoute>
+                  <ManageDentists/>
+                </PrivateRoute>
+            } />
+            <Route path='/patients/:id' element={
+                <PrivateRoute>
+                  <PatientDetails/>
+                </PrivateRoute>
+            } />
+            <Route path='/treatment-plans/:id' element={<TreatmentPlanDetails/>} />
+            <Route path='/staffs' element={<ManageStaff/>} />
+            <Route path='/treatment-plans/add-new-one/add' element={<AddTreatmentPlan/>} />
+          </Routes>
+        </BrowserRouter>
       {/* <BrowserRouter>
         <Routes>
           <Route path='/dashboard' element={

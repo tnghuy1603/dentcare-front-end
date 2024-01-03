@@ -2,7 +2,7 @@ import axios from 'axios';
 import React, { useEffect, useState } from 'react'
 import useAuth from '../hooks/useAuth';
 
-const ContraindicatedMedicines = ({constraindicatedMedicines, addContraindicatedMedicine}) => {
+const Allergy = ({constraindicatedMedicines, addContraindicatedMedicine}) => {
     const auth = useAuth();
     const [selectedMedicineId, setSelectedMedinceId] = useState(0);
     const [medicines, setMedicines] = useState([])
@@ -101,4 +101,4 @@ const ContraindicatedMedicines = ({constraindicatedMedicines, addContraindicated
   )
 }
 
-export default ContraindicatedMedicines
+export default Allergy

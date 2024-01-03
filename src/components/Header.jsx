@@ -12,7 +12,6 @@ const Header = () => {
                 </form>
                 <form action="" className="d-flex">
                     <input type="date" className="ms-3 search" />
-
                 </form>
             </div>
 

@@ -38,7 +38,6 @@ const ManageAppointment = () => {
     return (
         <>
             <div className="d-flex">
-
                 <h3 className="i-name">Manage Appointments</h3>
                 {(isAdmin || isStaff) &&  <button type="button" className="btn btn-info ms-auto h-50 mt-5 me-5" data-bs-toggle="modal" data-bs-target="#AddModal">Add appointment</button>}
             </div>
