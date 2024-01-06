@@ -50,14 +50,14 @@ function App() {
     <>
         <BrowserRouter>
           <Routes>
-            <Route path='/dashboard' element={<PrivateRoute>
+            <Route path='/dashboard' element={
                 <Dashboard/>
-            </PrivateRoute>}/>
+            }/>
             <Route path="/login" element={<Login/>}/>
             <Route path='/patients' element={
-              <PrivateRoute>
+              
                 <ManagePatients/>
-              </PrivateRoute>
+              
             } />
             <Route path='/appointments' element={
               <PrivateRoute>
@@ -74,10 +74,10 @@ function App() {
                   <ManageDentists/>
                 </PrivateRoute>
             } />
-            <Route path='/patients/:id' element={
-                <PrivateRoute>
+            <Route path='/patients-profile' element={
+                
                   <PatientDetails/>
-                </PrivateRoute>
+                
             } />
             <Route path='/treatment-plans/:id' element={<TreatmentPlanDetails/>} />
             <Route path='/staffs' element={<ManageStaff/>} />

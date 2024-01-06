@@ -1,86 +1,93 @@
-.fa-solid, .fas{
+.fa-solid,
+.fas {
     font-size: 24px;
 }
-.fa-pills{
+
+.fa-pills {
     color: black;
     font-size: 24px;
 }
+
 .red {
     background-color: red !important;
 }
+
 .green {
     background-color: green !important;
 }
 
 /* Admin css */
 
-#menu{
+#menu {
     background: #111827;
     width: 300px;
     height: 100%;
     position: fixed;
-    top:0;
+    top: 0;
     left: 0;
 
 }
-#menu .logo{
+
+#menu .logo {
     display: flex;
     align-items: center;
-    color:#fff;
-    padding:30px 0 0 30px;
+    color: #fff;
+    padding: 30px 0 0 30px;
 }
-#menu .logo img{
+
+#menu .logo img {
     width: 40px;
     margin-right: 15px;
 }
 
-#menu.items{
-    margin-top:40px;
+#menu.items {
+    margin-top: 40px;
 }
 
-#menu .items li{
+#menu .items li {
     list-style: none;
-    padding:15px 0;
-    color:#fff;
+    padding: 15px 0;
+    color: #fff;
 
 }
 
-#menu .items li:hover{
-    background:#253047 ;
+#menu .items li:hover {
+    background: #253047;
     cursor: pointer;
 }
 
-#menu .items li:nth-child(1){
+#menu .items li:nth-child(1) {
     border-left: 4px solid #fff;
 }
 
-#menu .items li i{
-    color:rgb(134,141,151);
-    width:30px;
+#menu .items li i {
+    color: rgb(134, 141, 151);
+    width: 30px;
     height: 30px;
     line-height: 30px;
 
     text-align: center;
     font-size: 14px;
-    margin:0 10px 0 25px;
+    margin: 0 10px 0 25px;
 
 }
-#menu .items li a{
+
+#menu .items li a {
     text-decoration: none;
-    color:rgb(134,141,151);
+    color: rgb(134, 141, 151);
     font-weight: 300px;
 }
 
 #menu .items li:hover i,
-#menu .items li:hover a
-{
-   
-    color:#f3f4f6;
+#menu .items li:hover a {
+
+    color: #f3f4f6;
 
 }
+
 #menu .items li i a {
     text-decoration: none;
-    color:rgb(134,141,151);
+    color: rgb(134, 141, 151);
     font-weight: 300px;
     transition: 0.3s ease;
 }
@@ -90,70 +97,74 @@
 
 #interface {
     width: calc(100%-300px);
-    margin-left:300px ;
+    margin-left: 300px;
     overflow-x: hidden;
 }
 
-#interface .navigation{
+#interface .navigation {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    background:#fff;
-    padding: 15px 30px ;
-    border-bottom:  3px solid #594ef7;
+    background: #fff;
+    padding: 15px 30px;
+    border-bottom: 3px solid #594ef7;
 
     width: 1235px;
 }
 
-#interface .navigation .search{
+#interface .navigation .search {
     display: flex;
     justify-content: flex-start;
     align-items: center;
-    padding:10px 14px;
+    padding: 10px 14px;
     border: 1px solid #d7dbe6;
     border-radius: 4px;
 }
 
-#interface .navigation .search i{
+#interface .navigation .search i {
     margin-right: 14px;
 }
-#interface .navigation .search input{
-    border:none;
+
+#interface .navigation .search input {
+    border: none;
     outline: none;
     font-size: 14px;
 }
 
-#interface .navigation .profile{
+#interface .navigation .profile {
     display: flex;
     justify-content: flex-start;
     align-items: center;
 }
 
-#interface .navigation .profile i{
+#interface .navigation .profile i {
     margin-right: 20px;
     font-size: 19px;
 }
-#interface .navigation .profile img{
+
+#interface .navigation .profile img {
     width: 30px;
     height: 30px;
     object-fit: cover;
     border-radius: 50%;
 }
 
-.n1{
+.n1 {
     display: flex;
     justify-content: flex-start;
     align-items: center;
 }
-#menu-btn{
-    
 
-    color:#2b2b2b;
+#menu-btn {
+
+
+    color: #2b2b2b;
     font-size: 20px;
     cursor: pointer;
     margin-right: 20px;
 }
-.i-name{
+
+.i-name {
     color: #444a53;
     padding: 30px 30px 0 30px;
     font-size: 24px;
@@ -161,18 +172,18 @@
     overflow-y: hidden;
 }
 
-.user-btn{
+.user-btn {
     border: none;
     margin-right: 62px;
 }
 
-.values{
+.values {
     padding: 30px 30px 0 30px;
     display: flex;
     justify-content: space-between;
 }
 
-.values .val-box{
+.values .val-box {
     background: #e8e8e8;
     width: 235px;
     padding: 16px 20px;
@@ -182,46 +193,54 @@
     align-items: center;
 
 }
-.values .val-box i{
+
+.values .val-box i {
     font-size: 25px;
     width: 60px;
     height: 60px;
     line-height: 60px;
     border-radius: 50%;
     text-align: center;
-    color:#fff;
+    color: #fff;
     background: #ac1e11;
     margin-right: 15px;
 }
-.values .val-box:nth-child(1) i{
+
+.values .val-box:nth-child(1) i {
     background: #7B74EC;
 }
-.values .val-box:nth-child(2) i{
+
+.values .val-box:nth-child(2) i {
     background: #5C8af0;
 }
-.values .val-box:nth-child(3) i{
+
+.values .val-box:nth-child(3) i {
     background: #e45d99;
 }
-.values .val-box:nth-child(4) i{
+
+.values .val-box:nth-child(4) i {
     background: #74daec;
 }
-.values .val-box h3{
+
+.values .val-box h3 {
     font-size: 18px;
     font-weight: 600;
 }
-.values .val-box span{
+
+.values .val-box span {
     font-size: 18px;
-    color:#828997;
+    color: #828997;
 }
 
-.board{
-    width:95%;
-    margin:30px 0 30px 30px;
+.board {
+    width: 95%;
+    margin: 30px 0 30px 30px;
     overflow: auto;
     background: #dddada;
     border-radius: 8px;
 }
-.board img{
+
+.board img {
     width: 45px;
     height: 45px;
     object-fit: cover;
@@ -229,55 +248,55 @@
     margin-right: 15px;
 }
 
-.board h5{
+.board h5 {
     font-weight: 600;
     font-size: 14px;
 }
 
-.board p{
+.board p {
     font-weight: 600;
     font-size: 14px;
-    color:#787d8d;
+    color: #787d8d;
 }
 
-.board .people{
+.board .people {
     display: flex;
     justify-content: flex-start;
     align-items: center;
     text-align: start;
 }
 
-table{
+table {
     border-collapse: collapse;
 }
 
-tr{
+tr {
     border-bottom: 1px solid #eef0f3;
 }
 
-thead td{
+thead td {
     font-size: 14px;
     text-transform: uppercase;
     font-weight: 400;
-    background:#f9fafb;
+    background: #f9fafb;
     text-align: start;
-    padding:15px;
+    padding: 15px;
 }
 
-tbody tr td{
-     padding: 10px 15px;
+tbody tr td {
+    padding: 10px 15px;
 
 }
 
-.active p{
-    background:#d7fada ;
-    padding:2px 10px;
+.active p {
+    background: #d7fada;
+    padding: 2px 10px;
     display: inline-block;
     border-radius: 40px;
-    color:#2b2b2b;
+    color: #2b2b2b;
 }
 
-.edit a{
+.edit a {
     text-decoration: none;
     font-size: 14px;
     color: #554cd1;
@@ -290,27 +309,116 @@ tbody tr td{
 }
 
 @media (max-width:769px) {
-    #menu{
-       
+    #menu {
+
         width: 270px;
-       
+
         position: fixed;
-        left:-270px
-    
+        left: -270px
     }
-    #interface{
-        width:100%;
-        margin-left:0;
-        position:inline-block;
+
+    #interface {
+        width: 100%;
+        margin-left: 0;
+        position: inline-block;
 
     }
-    #interface .navigation{
-       width: 100%;
+
+    #interface .navigation {
+        width: 100%;
     }
-    #menu .active{
-        left:0;
+
+    #menu .active {
+        left: 0;
     }
-    #menu-btn{
+
+    #menu-btn {
         display: initial;
     }
 }
+
+.search-page-input {
+    width: 55px;
+    text-align: center;
+}
+
+.page-item {
+    background: transparent;
+}
+
+.page-link {
+    background: transparent;
+    border: none !important;
+}
+
+/* Patient profile CSS */
+
+.user-row {
+    margin-bottom: 14px;
+}
+
+.user-row:last-child {
+    margin-bottom: 0;
+}
+
+.dropdown-user {
+    margin: 13px 0;
+    padding: 5px;
+    height: 100%;
+}
+
+.dropdown-user:hover {
+    cursor: pointer;
+}
+
+.table-user-information>tbody>tr {
+    border-top: 1px solid rgb(221, 221, 221);
+}
+
+.table-user-information>tbody>tr:first-child {
+    border-top: 0;
+}
+
+
+.table-user-information>tbody>tr>td {
+    border-top: 0;
+}
+
+.toppad {
+    margin-top: 20px;
+}
+
+.edit-btn-profile,
+.homepage-btn-profile {
+    width: 140px;
+}
+
+/* Process steps CSS */
+
+.step-container {
+    display: flex;
+    overflow: hidden;
+    margin-bottom: 20px;
+  }
+  
+  .step-group {
+    display: flex;
+    width: 300%;
+  }
+  
+  .step {
+    flex: 1;
+    padding: 10px;
+    text-align: center;
+    opacity: 1;
+    transition: opacity 0.3s ease-in-out;
+  }
+  
+  .step-enter {
+    opacity: 0;
+  }
+  
+  .step-enter-active,
+  .step-exit-active {
+    opacity: 1;
+  }

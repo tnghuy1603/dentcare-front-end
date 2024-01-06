@@ -2,21 +2,10 @@ import React from "react";
 
 const Header = () => {
     return (
-        <div className="navigation">
-            <div className="n1">
-                <i id="menu-btn" className="fas fa-bars"></i>
-                <form className="search">
-                    <i className="fa-solid fa-search"></i>
-                    <input type="text" name="" id="" placeholder="Search" />
-                    <button type="submit" className="btn btn-secondary ms-3">Submit</button>
-                </form>
-                <form action="" className="d-flex">
-                    <input type="date" className="ms-3 search" />
-                </form>
-            </div>
+        <div className="navigation justify-content-end">
+            
 
             <div className="profile">
-                <i className="far fa-bell"></i>
                 <nav className="navbar navbar-expand-lg navbar-dark bg-white">
                         <div className="collapse navbar-collapse" id="navbarNavDarkDropdown">
                             <ul className="navbar-nav">

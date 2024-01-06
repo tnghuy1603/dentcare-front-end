@@ -11,8 +11,7 @@ const Dashboard = () => {
         <section id="interface">
             <Header/>
             <Sidebar/>
-            <Home/>
-                
+            <Home/>           
         </section>
     </>
   )
