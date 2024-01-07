@@ -1,11 +1,18 @@
+:root{
+    --prm-color: #0381ff;
+    --prm-gray: #b1b1b1;
+}
+
 *{
     box-sizing: border-box;
     margin: 0;
     padding: 0;
 }
 
+
 #root{
     margin: 0 auto;
     padding: 0 auto;
     background-color: #f1f3f5;
+    
 }

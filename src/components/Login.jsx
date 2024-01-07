@@ -25,7 +25,7 @@ const Login = () => {
       window.location.href = "/dashboard";
     } catch (error) {
       setErrMsg('Invalid username or password');
-      setShowModal()
+      setShowModal(true)
     }
   };
   return (
@@ -61,34 +61,41 @@ const Login = () => {
                     </p>
 
                     <div className="form-outline form-white mb-4">
+                      <label className="form-label float-start" htmlFor="typeEmailX">
+                        Email
+                      </label>
                       <input
                         type="email"
                         id="typeEmailX"
                         className="form-control form-control-lg"
                         onChange={(e) => setEmail(e.target.value)}
                       />
-                      <label className="form-label" htmlFor="typeEmailX">
-                        Email
-                      </label>
+
                     </div>
 
                     <div className="form-outline form-white mb-4">
+                      <label className="form-label float-start" htmlFor="typePasswordX">
+                        Password
+                      </label>
                       <input
                         type="password"
                         id="typePasswordX"
                         className="form-control form-control-lg"
                         onChange={(e) => setPassword(e.target.value)}
                       />
-                      <label className="form-label" htmlFor="typePasswordX">
-                        Password
-                      </label>
+
                     </div>
+
+                    {showModal && <span className="text-danger float-start">Login failed</span>}
+                    <br/>
+
 
                     <p className="small mb-5 pb-lg-2">
                       <a className="text-white-50" href="#!">
                         Forgot password?
                       </a>
                     </p>
+
 
                     <button
                       className="btn btn-outline-light btn-lg px-5"

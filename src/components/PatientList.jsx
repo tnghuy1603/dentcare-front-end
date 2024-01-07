@@ -5,8 +5,9 @@ import { Link } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEdit, faEye, faInfo, faSearch } from "@fortawesome/free-solid-svg-icons";
 
-const PatientList = () =>  {
+const PatientList = ({onClickDetail}) =>  {
   const auth = useAuth();
+  const [clickShowDetail, setClickShowDetail] = useState(false);
   const [patients, setPatients] = useState([]);
   const [name, setName] = useState('');
   const [address, setAddress] = useState('');
@@ -51,6 +52,10 @@ const PatientList = () =>  {
   useEffect(() => {
     fetchPatients();
   }, []);
+
+  const sendClickDetail = () =>{
+    onClickDetail(!clickShowDetail)
+  }
   
 
   const handleUpdate = async (patientId) => {
@@ -109,12 +114,12 @@ const PatientList = () =>  {
   
 
   return (
-    <>
+    !onClickDetail && <>
       <div className="d-flex">
           <h3 className="i-name">Patient Profiles</h3>
-          <div class="d-flex mx-5" role="search">
-            <input class="form-control me-2 ms-auto h-50 mt-5 me-5" type="search" placeholder="Search" aria-label="Search" onChange={(e) => setSearchTerm(e.target.value)}/>
-            <button class="btn btn-success ms-auto h-50 mt-5 me-5" type="submit"><FontAwesomeIcon icon={faSearch} onClick={handleSearch}/></button>
+          <div className="d-flex mx-5" role="search">
+            <input className="form-control me-2 ms-auto h-50 mt-5 me-5" type="search" placeholder="Search" aria-label="Search" onChange={(e) => setSearchTerm(e.target.value)}/>
+            <button className="btn btn-success ms-auto h-50 mt-5 me-5" type="submit"><FontAwesomeIcon icon={faSearch} onClick={handleSearch}/></button>
           </div>
           <button type="button" className="btn btn-primary ms-auto h-50 mt-5 me-5" data-bs-toggle="modal" data-bs-target="#addPatientModel">Add patient</button>
       </div>
@@ -134,8 +139,8 @@ const PatientList = () =>  {
             </tr>
           </thead>
           <tbody>
-          {patients.map((patient, idx) => (
-          <tr key={patient.id}>
+          {patients && patients.map((patient, idx) => (
+          <tr key={patient.id} onClick={sendClickDetail}>
             <th scope="row">{idx+1}</th>
             <td>{patient.name}</td>
             <td>{patient.gender}</td>
@@ -143,9 +148,9 @@ const PatientList = () =>  {
             <td>{patient.address}</td>
             <td>{patient.phoneNumber}</td>
             <td colSpan={1} className="d-flex gap-3 align-middle">
-            <Link to={`./${patient.id}`} state={{patientData: patient}}>
+            {/* <Link to={`/patients-profile`} state={{patientData: patient}}>
               <div className="px-3"><FontAwesomeIcon icon={faEye} style={{'color' : 'green'}}/></div>
-            </Link>
+            </Link> */}
               <div data-bs-toggle="modal" data-bs-target="#editModal"><FontAwesomeIcon icon={faEdit} style={{'color': 'green'}}/></div>
               <div className="modal fade" id="editModal" tabIndex={'-1'} aria-labelledby="editModalLabel" aria-hidden="true">
                 <div className="modal-dialog">
@@ -245,8 +250,8 @@ const PatientList = () =>  {
                                 <span aria-hidden="true">&raquo;</span>
                             </button>
                         </li>
-                        <input type="text" className="bg-white text-black search-page-input" value={searchPage} onChange={(e) => setSearchPage(e.target.value)}/>
-                        <button  className="ms-3 bg-primary" onClick={handleSearchPage}>Search</button>
+                        <input type="text" className="bg-white ms-2 text-black search-page-input" value={searchPage} onChange={(e) => setSearchPage(e.target.value)}/>
+                        <button  className="ms-3 btn btn-info" onClick={handleSearchPage}>Search</button>
                         
                     </ul>
                 </nav>

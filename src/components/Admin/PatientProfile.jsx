@@ -68,7 +68,7 @@ const PatientProfile = () => {
 
                                 <td className="edit text-center">
                                     <a href="#" className="me-4" data-bs-toggle="modal" data-bs-target="#EditModal">Edit</a>
-                                    <Link to={`/patients/1`} className="patients-router">
+                                    <Link to={`/patients/${patient.id}`} className="patients-router">
                                         View
                                     </Link>
 
