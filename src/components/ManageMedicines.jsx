@@ -1,16 +1,18 @@
 import React from 'react'
+import MedicineList from './MedicineList'
 import Sidebar from './Sidebar'
 import Header from './Header'
 
-const ManageSchedules = ({role}) => {
+const ManageMedicines = ({role}) => {
   return (
     <>
       <section id='interface'>
         <Header/>
-        <Sidebar/> 
+        <Sidebar/>   
+        <MedicineList role={role}/>
       </section>
     </>
   )
 }
 
-export default ManageSchedules
+export default ManageMedicines

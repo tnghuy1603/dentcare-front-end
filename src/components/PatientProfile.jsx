@@ -7,9 +7,9 @@ import { CSSTransition, TransitionGroup } from 'react-transition-group';
 import Allergy from './Allergy';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEdit } from '@fortawesome/free-solid-svg-icons';
-import {tableCellClasses ,styled, Paper, Stepper, StepLabel, Step, TextField, Button, InputLabel, Select, MenuItem, FormControl, Card, CardHeader, CardContent, TableContainer, Table, TableHead, TableBody, TableRow, TableCell } from '@mui/material';
+import {tableCellClasses ,styled, Paper, Stepper, StepLabel, Step, TextField, Button, InputLabel, Select, MenuItem, FormControl, Card, CardHeader, CardContent, TableContainer, Table, TableHead, TableBody, TableRow, TableCell, Checkbox, FormControlLabel } from '@mui/material';
 
-function PatientDetails({ showDetailSignal }) {
+function PatientDetails({ role }) {
     const [currentStep, setCurrentStep] = useState(1);
     const [dataTreatmentPlan, setDataTreatmentPlan] = useState({});
     const [finalData, setFinalData] = useState([]);
@@ -18,10 +18,25 @@ function PatientDetails({ showDetailSignal }) {
     const [treatmentPlans, setTreatmentPlans] = useState([]);
     const [precriptions, setPrescriptions] = useState([]);
     const [medicines, setMedicines] = useState([]);
-    // const { patientData } = location.state;
-    const [patient, setPatient] = useState('');
-    const [oralHealth, setOralHealth] = useState(patient.oralHealth)
-    const [allergies, setAllergy] = useState([])
+
+    const [dentists, setDentists] = useState([]);
+    const [treatmentCodes, setTreatmentCodes] = useState([]);
+    const [teeth, setTeeth] = useState([]);
+    const [surfaces, setSurfaces] = useState([]);
+    const [treatmentCategories, setTreatmentCategories] = useState([])
+    const [patient, setPatient] = useState(location.state.patient);
+
+    const [startDate, setStartDate] = useState(new Date());
+    const [selectedToTreat, setSelectedToTreat] = useState([]);
+    const [selectedDentistId, setSelectedDentistId] = useState(null)
+    const [selectedTreamentCodeIds, setSelectedTreatmentCodeIds] = useState([]);
+    const [selectedSurfaceIds, setSelectedSurfaceIds] = useState([]);
+
+    const [selectedTreatmentCategoryId, setSelectedTreatmentCategoryId] = useState(-1)
+    const [selectedTeeth, setSelectedTeeth] = useState([]);
+    const apiUrl = `http://localhost:8080`
+    
+    const [allergies, setAllergies] = useState([])
     const getTreatmentsPlans = async () => {
         const res = await axios.get(`http://localhost:8080/treatment-plans/${patient.id}`, {
             headers: {
@@ -35,18 +50,77 @@ function PatientDetails({ showDetailSignal }) {
         console.log("Treatment plan", res.data);
         setTreatmentPlans(res.data)
     }
+    const fetchTreatmentCategories = async () => {
+        const res = await axios.get(`${apiUrl}/treatment-categories`, {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${auth.accessToken}`,
+          },
+        });
+        console.log("Treatment categories", res.data);
+        setTreatmentCategories(res.data);
+    };
+    const fetchTreatmentCodes = async () => {
+        const res = await axios.get(`${apiUrl}/treatment-codes`, {
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${auth.accessToken}`,
+            },
+            params: {
+                treatmentCategory: selectedTreatmentCategoryId
+            }
+          });
+          console.log("Treatment codes", res.data);
+          setTreatmentCodes(res.data)
+    }
+    
+    
+    
 
-    const getMedicines = async () => {
-        const res = await axios.get(`http://localhost:8080/medications`, {
+    // const getMedicines = async () => {
+    //     const res = await axios.get(`http://localhost:8080/medications`, {
+    //         headers: {
+    //             'Content-Type': 'application/json',
+    //             'Authorization': `Bearer ${auth.accessToken}`
+    //         },
+    //         // params: {
+    //         //     patient: patient.id
+    //         // }
+            
+    //     })
+    //     setMedicines(res.data)
+    // }
+    const fetchTeeth = async () => {
+        const res = await axios.get(`${apiUrl}/teeth`,{
             headers: {
                 'Content-Type': 'application/json',
                 'Authorization': `Bearer ${auth.accessToken}`
-            },
-            params: {
-                patient: patient.id
             }
         })
-        setMedicines(res.data)
+        console.log("Teeth", res.data);
+        setTeeth(res.data)
+    }
+    const fetchSurfaces = async () => {
+        const res = await axios.get(`${apiUrl}/surfaces`,{
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${auth.accessToken}`
+            }
+        })
+        console.log("Surfaces", res.data);
+        setSurfaces(res.data)
+    }
+    const fetchDentists = async () => {
+        const res = await axios.get(`${apiUrl}/users/all`, {
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${auth.accessToken}`
+          },
+          params: {
+            role: 'ROLE_DENTIST'
+          }
+        });
+        setDentists(res.data);
     }
     const getPrescriptions = async () => {
         const res = await axios.get(`http://localhost:8080/prescriptions`, {
@@ -60,20 +134,21 @@ function PatientDetails({ showDetailSignal }) {
         })
         setPrescriptions(res.data)
     }
-    const getAllergy = async () => {
+    const fetchAllergies = async () => {
         const res = await axios.get(`http://localhost:8080/patients/allergic/${patient.id}`, {
             headers: {
                 'Content-Type': 'application/json',
                 'Authorization': `Bearer ${auth.accessToken}`
             }
         })
-        setAllergy(res.data);
+        setAllergies(res.data);
     }
     const addPrescriptions = async () => {
         const res = await axios.post(`http://localhost:8080/prescriptions`, {
             patientId: patient.id,
         })
     }
+
     const handleAddAllergy = async (medId) => {
         const res = await axios.post(`http://localhost:8080/patients/allergic/${patient.id}`, {}, {
             headers: {
@@ -84,16 +159,25 @@ function PatientDetails({ showDetailSignal }) {
                 medicine: medId
             }
         })
-        setContraindicatedMedicines([...contraindicatedMedicines, res.data])
+        setAllergies([...allergies, res.data])
     }
 
 
     useEffect(() => {
-        getMedicines();
+        // getMedicines();
+        fetchDentists();
+        fetchTreatmentCategories();
         getTreatmentsPlans();
         getPrescriptions();
-        getAllergy();
+        fetchAllergies();
     }, []);
+    useEffect(() => {
+        fetchTreatmentCodes();
+        fetchTeeth();
+        fetchSurfaces();
+        
+    }, [selectedTreatmentCategoryId])
+    console.log("Patient", patient);
     const getAge = (dob) => {
         const birthDay = new Date(dob);
         const today = new Date();
@@ -105,6 +189,7 @@ function PatientDetails({ showDetailSignal }) {
         }
         return age;
     }
+    
 
     const handleUpdateOralHealth = async () => {
         console.log(patient.oralHealth);
@@ -119,11 +204,10 @@ function PatientDetails({ showDetailSignal }) {
     const handleShowStep = (step) => {
         switch (step) {
             case 1:
-                return <>
+                return <div>
                     <FormControl className='w-25 mt-3'>
-                        <TextField margin="normal" variant="outlined" type='date' color="secondary" value={dataTreatmentPlan['date']}
-                                // Save selected date to dataTreatmentPlan for reusing and for back to previous step
-                                onChange={(e) => { setDataTreatmentPlan({ ...dataTreatmentPlan, 'date': e.target.value }) }} />
+                        <TextField margin="normal" variant="outlined" type='date' color="secondary" value={dataTreatmentPlan['date']}                               
+                                onChange={(e) => setStartDate(e.target.value)} />
                     </FormControl>
 
                     <div className="mt-3">
@@ -133,89 +217,100 @@ function PatientDetails({ showDetailSignal }) {
                             <InputLabel id="demo-simple-select-label">Dentist</InputLabel>
                             <Select
                                 labelId="demo-simple-select-label"
-                                value={dataTreatmentPlan['dentistName']}
+                                // value={dataTreatmentPlan['dentistId']}
                                 // Save selected dentist to dataTreatmentPlan for reusing and for back to previous step
-                                onChange={(e) => { setDataTreatmentPlan({ ...dataTreatmentPlan, 'dentistName': e.target.value }) }}
+                                onChange={(e) => setSelectedDentistId(e.target.value)}
                                 id="demo-simple-select"
                                 label="Dentist"
                                 className='w-100'
                             >
-
-                                <MenuItem value="dentistName1">Dentist1</MenuItem>
-                                <MenuItem value="dentistName2">Dentist2</MenuItem>
-                                <MenuItem value="dentistName3">Dentist3</MenuItem>
+                                {dentists.map((dentist) => (
+                                    <MenuItem value={dentist.id} key={dentist.id}>{dentist.name}</MenuItem>
+                                ))}
+                                
                             </Select>
                         </FormControl>
                     </div>
-
                     <div className="mt-2">
-
                         <FormControl className='w-25 mt-3'>
-                            <InputLabel id="treatment-simple-select-label">Treatment list</InputLabel>
+                            <InputLabel id="treatment-simple-select-label">Treatment category</InputLabel>
                             <Select
                                 labelId="treatment-simple-select-label"
-                                value={dataTreatmentPlan['treatment']}
+                                // value={dataTreatmentPlan['treatment']}
                                 // Save selected treatment item to dataTreatmentPlan for reusing and for back to previous step
-                                onChange={(e) => { setDataTreatmentPlan({ ...dataTreatmentPlan, 'treatment': e.target.value }) }}
+                                // onChange={(e) => { setDataTreatmentPlan({ ...dataTreatmentPlan, 'treatment': e.target.value }) }}
+                                onChange={(e) => setSelectedTreatmentCategoryId(e.target.value)}
                                 id="treatment-simple-select"
-                                label="Treatment list"
+                                label="Treatment category"
                                 className='w-100'
                             >
-
-                                <MenuItem value="treatment1">Treatment1</MenuItem>
-                                <MenuItem value="treatment2">Treatment2</MenuItem>
-                                <MenuItem value="treatment3">Treatment3</MenuItem>
+                                {treatmentCategories.map((category) => (
+                                    <MenuItem value={category.id} key={category.id}>
+                                        {category.name}
+                                    </MenuItem>
+                                ))}
+                                
                             </Select>
                         </FormControl>
                     </div>
+                    <div className="mt-3">
+                        <p>Treatment Code</p>
+                        <FormControl className='w-25'>
+
+                            <div className='d-flex flex-row justify-content-center gap-4'>
+                                {treatmentCodes.map((code) => (
+                                <FormControlLabel control={<Checkbox value={code.id} />} label={code.description} onChange={(e) => {
+                                    const newSelectedTreatmentCode = e.target.checked ? [...selectedTreamentCodeIds, code.id] : selectedTreamentCodeIds.filter(selected => selected !== code.id);
+                                    console.log("New selected treatment code", newSelectedTreatmentCode);
+                                    setSelectedTreatmentCodeIds(newSelectedTreatmentCode);
+                                }}/>   
+                                ))}
+                            </div>
+    
+                        </FormControl>
+                    </div>
+
 
 
                     <div className="mt-3">
                         <Button variant="contained" color="primary" onClick={() => setCurrentStep(2)}>Next</Button>
                     </div>
-                </>
+                </div>
             case 2:
                 return <>
-                    <FormControl className='w-25 mt-3'>
-                        <InputLabel id="tooth-simple-select-label">Tooth</InputLabel>
-                        <Select
-                            labelId="tooth-simple-select-label"
-                            value={dataTreatmentPlan['tooth']}
-                            // Save selected tooth to dataTreatmentPlan for reusing and for back to previous step
-                            onChange={(e) => { setDataTreatmentPlan({ ...dataTreatmentPlan, 'tooth': e.target.value }) }}
-                            id="tooth-simple-select"
-                            label="Tooth"
-                            className='w-100'
-                        >
-
-                            <MenuItem value="tooth1">Tooth1</MenuItem>
-                            <MenuItem value="tooth2">Tooth2</MenuItem>
-                            <MenuItem value="tooth3">Tooth3</MenuItem>
-                        </Select>
+                    <FormControl className='w-100 mt-3'>
+                        <div className='fs-5 fw-bold'>Select teeth</div>
+                        <div className='row justify-content-center'>
+                            {teeth.map((tooth => (
+                            <FormControlLabel className='col-3' control={<Checkbox value={tooth.id} />} label={tooth.toothName} key={tooth.id} onChange ={(e) => {
+                                const newSelectedTeeth = e.target.checked ? [...selectedTeeth, tooth.id] : selectedTeeth.filter((id) => id !== tooth.id);
+                                console.log("Selected teeth", newSelectedTeeth);
+                                setSelectedTeeth(newSelectedTeeth)
+                                
+                            }}
+                            />   
+                            )))}
+                        </div>
                     </FormControl>
 
-                    <div className=" mt-3">
-                        <FormControl className='w-25'>
-                            <InputLabel id="surface-simple-select-label">Surface</InputLabel>
-                            <Select
-                                labelId="surface-simple-select-label"
-                                value={dataTreatmentPlan['surface']}
-                                // Save selected surface to dataTreatmentPlan for reusing and for back to previous step
-                                onChange={(e) => { setDataTreatmentPlan({ ...dataTreatmentPlan, 'surface': e.target.value }) }}
-                                id="surface-simple-select"
-                                label="Surface"
-                                className='w-100'
-                            >
-
-                                <MenuItem value="surface1">Surface1</MenuItem>
-                                <MenuItem value="surface2">Surface2</MenuItem>
-                                <MenuItem value="surface3">Surface3</MenuItem>
-                            </Select>
+                    <div className=" mt-5">
+                        <FormControl className=' row justify-content-end'>
+                                <div className='fs-5 fw-bold'>Select surface</div>
+                                <div className='row justify-content-center'>
+                                    {surfaces.map((surface => (
+                                        <FormControlLabel className='col-4' control={<Checkbox value={surface.id} />} label={surface.name} key={surface.id} onChange={(e) => {
+                                            const newSelectedSurface = e.target.checked ? [...selectedSurfaceIds, surface.id] : selectedSurfaceIds.filter(selected => selected !== surface.id);
+                                            console.log("New selected surface", newSelectedSurface);
+                                            setSelectedSurfaceIds(newSelectedSurface);
+                                        }}/>   
+                                    )))}
+                                </div>
                         </FormControl>
                     </div>
+                
 
-                    <div className="mt-3">
-                        <Button variant="contained" color="secondary" className='me-3' onClick={() => setCurrentStep(1)}>Back</Button>
+                    <div className="mt-3 d-flex justify-content-center">
+                        <Button variant="contained" color="secondary" className='mx-5' onClick={() => setCurrentStep(1)}>Back</Button>
 
                         <Button variant="contained" color="primary" onClick={() => setCurrentStep(3)}>Next</Button>
                     </div>
@@ -229,30 +324,30 @@ function PatientDetails({ showDetailSignal }) {
                         <CardContent>
 
                             <div className="">
-                                <p>Date: {dataTreatmentPlan.date}</p>
+                                <p>Date: {startDate}</p>
                             </div>
 
                             <div className="">
-                                <p>Dentist: {dataTreatmentPlan['dentistName']}</p>
+                                <p>Dentist: {dentists.find(dentist => dentist.id === selectedDentistId).name}</p>
                             </div>
 
                             <div className="">
-                                <p>Treatment: {dataTreatmentPlan['treatment']}</p>
+                                <p>Treatment: {treatmentCodes.filter(code => selectedTreamentCodeIds.includes(code.id)).map(code => code.description).join(', ')}</p>
                             </div>
 
                             <div className="">
-                                <p>Tooth: {dataTreatmentPlan['tooth']}</p>
+                                <p>Tooth: {teeth.filter(tooth => selectedTeeth.includes(tooth.id)).map(tooth => tooth.toothName).join(', ')}</p>
                             </div>
 
                             <div className="">
-                                <p>Surface: {dataTreatmentPlan['surface']}</p>
+                                <p>Surface: {surfaces.filter(surface => selectedSurfaceIds.includes(surface.id)).map(surface => surface.name).join(', ')}</p>
                             </div>
                         </CardContent>
                     </Card>
 
                     <div className="mt-3">
                         <Button variant="contained" className='me-3' color="secondary" onClick={() => setCurrentStep(2)}>Back</Button>
-                        <Button variant="contained" color="primary" onClick={handleSubmitTreatment}>Submit</Button>
+                        <Button variant="contained" color="primary" onClick={handleAddTreatmentPlan}>Submit</Button>
                     </div>
 
 
@@ -260,9 +355,31 @@ function PatientDetails({ showDetailSignal }) {
         }
     }
 
-    const handleSubmitTreatment = () => {
-        setFinalData(finalData => [...finalData, dataTreatmentPlan]);
-        setDataTreatmentPlan('');
+    const handleAddTreatmentPlan = async () => {
+        const toothSelectionDto = []
+        for(let toothId of selectedTeeth){
+            toothSelectionDto.push({toothId, surfacesId: selectedSurfaceIds})
+        }
+        console.log("Tooth selection dto", toothSelectionDto);
+        const treatmentPlanToAdd = {
+            patientId: patient.id,
+            treatmentCodeId: selectedTreamentCodeIds,
+            dentistId: selectedDentistId,
+            assitantId: null,
+            note: null,
+            startingDate: startDate,
+            status: 'Planned',
+            toothSelectionDtoList: toothSelectionDto
+        }
+        console.log("Request", treatmentPlanToAdd);
+        const res = await axios.post(`${apiUrl}/treatment-plans`, treatmentPlanToAdd, {
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${auth.accessToken}`
+            }
+        })
+        console.log("New treatment plan", res.data)
+        setTreatmentPlans([...treatmentPlans, res.data]);
         setCurrentStep(1);
     }
 
@@ -287,9 +404,9 @@ function PatientDetails({ showDetailSignal }) {
     }));
 
 
+
     return (
-        !showDetailSignal && <>
-        {/* Patient and Treatment plan detail */}
+        <>
             <div className="container-fluid">
                 <div className="row justify-content-center">
                     <div className="w-100 col-xs-12 col-sm-12 col-md-6 col-lg-6 col-xs-offset-0 col-sm-offset-0 col-md-offset-3 col-lg-offset-3 toppad" >
@@ -349,7 +466,7 @@ function PatientDetails({ showDetailSignal }) {
                                         </table>
 
                                         <div className="panel-heading text-center mt-5">
-                                            <h3 className="panel-title">Contradicted medicines</h3>
+                                            <h3 className="panel-title">Allergic medicines</h3>
                                         </div>
                                         <div className="board mt-4 d-flex justify-content-center">
                                             <table className="table table-striped">
@@ -365,14 +482,14 @@ function PatientDetails({ showDetailSignal }) {
                                                     </tr>
                                                 </thead>
                                                 <tbody>
-                                                    {medicines && medicines.map((medicine, idx) => (
+                                                    {allergies && allergies.map((medicine, idx) => (
                                                         <tr key={medicine.id}>
                                                             <th scope="row">{idx + 1}</th>
                                                             <td>{medicine.name}</td>
-                                                            <td>{medicine.gender}</td>
-                                                            <td>{medicine.dob}</td>
-                                                            <td>{medicine.address}</td>
-                                                            <td>{medicine.phoneNumber}</td>
+                                                            <td>{}</td>
+                                                            <td></td>
+                                                            <td></td>
+                                                            <td></td>
                                                             <td colSpan={1} className="d-flex gap-3 align-middle">
                                                                 {/* <Link to={`/patients-profile`} state={{patientData: patient}}>
               <div className="px-3"><FontAwesomeIcon icon={faEye} style={{'color' : 'green'}}/></div>
@@ -439,7 +556,7 @@ function PatientDetails({ showDetailSignal }) {
                                             {handleShowStep(currentStep)}
                                         </div>
 
-                                        <TableContainer component={Paper} className='mt-4'>
+                                        {/* <TableContainer component={Paper} className='mt-4'>
                                             <Table sx={{ minWidth: 650 }} aria-label="simple table">
                                                 <TableHead>
                                                     <TableRow>
@@ -469,7 +586,8 @@ function PatientDetails({ showDetailSignal }) {
                                                     ))}
                                                 </TableBody>
                                             </Table>
-                                        </TableContainer>
+                                        </TableContainer> */}
+                                        <TreatmentPlanList treatmentPlans={treatmentPlans}/>
 
                                         <div className="text-center mt-5">
 

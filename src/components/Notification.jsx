@@ -20,6 +20,7 @@ const Notification = ({notification}) => {
                     <div className="modal-footer">
                         <button type="button" className="btn btn-primary close-notification">{notification.footer}</button>
                     </div>
+                    
                 </div>
             </div>
         </div>

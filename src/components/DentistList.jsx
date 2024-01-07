@@ -9,7 +9,7 @@ import { faAdd } from '@fortawesome/free-solid-svg-icons';
 import { faEdit } from '@fortawesome/free-regular-svg-icons';
 
 
-const DentistList = () => {
+const DentistList = ({role}) => {
   const auth = useAuth();
   const [dentists, setDentists] = useState([])
   const [branches, setBranches] = useState([])
@@ -118,7 +118,8 @@ const DentistList = () => {
     <>
     <div className="d-flex">
         <h3 className="i-name">Manage Dentist</h3>
-        <button type="button" className="btn btn-primary ms-auto h-50 mt-5 me-5" data-bs-toggle="modal" data-bs-target="#addModel">Add dentist</button>
+        {role.includes('ROLE_ADMIN') && <button type="button" className="btn btn-primary ms-auto h-50 mt-5 me-5" data-bs-toggle="modal" data-bs-target="#addModel">Add dentist</button>
+}
     </div>
     <div className='mt-3 p-3'>
       <table className="table table-striped" width='100%'>
@@ -130,7 +131,8 @@ const DentistList = () => {
             <th scope="col">Phone Number</th>
             <th scope="col">Email</th>
             <th scope="col">Day of birth</th>
-            <th scope="col">Edit</th>
+            {role.includes('ROLE_ADMIN') && <th scope="col">Edit</th>}
+            
           </tr>
         </thead>
         <tbody className='text-center'>
@@ -142,9 +144,11 @@ const DentistList = () => {
               <td className='aligin-middle'>{dentist.phoneNumber}</td>
               <td className='aligin-middle'>{dentist.email}</td>
               <td className='aligin-middle'>{dentist.dob}</td>
+              {role.includes('ROLE_ADMIN') && (
               <td className='aligin-middle'>
                 <div data-bs-toggle="modal" data-bs-target="#editModal"><FontAwesomeIcon icon={faEdit} style={{'color': 'green'}} onClick={() => popUpEditModal(dentist)}/></div>
               </td>
+              )}
             </tr>
           ))}
         </tbody>

@@ -21,6 +21,8 @@ import ManagePatients from './components/ManagePatients'
 import ManageAppointments from './components/ManageAppointments'
 import TreatmentPlanDetails from './components/TreatmentPlanDetails'
 import AddTreatmentPlan from './components/AddTreatmentPlan'
+import ManagePatientProfile from './components/ManagePatientProfile'
+import ManageMedicines from './components/ManageMedicines'
 
 
 
@@ -56,32 +58,36 @@ function App() {
             <Route path="/login" element={<Login/>}/>
             <Route path='/patients' element={
               
-                <ManagePatients/>
+                <ManagePatients role={roles[0]}/>
               
             } />
             <Route path='/appointments' element={
               <PrivateRoute>
-                <ManageAppointments/>
+                <ManageAppointments role={roles[0]}/>
               </PrivateRoute>
             }/>
             <Route path='/medicines' element={
               <PrivateRoute>
-                <MedicineList/>
+                <ManageMedicines role={roles[0]}/>
               </PrivateRoute>
             } />
             <Route path='/dentists' element={
                 <PrivateRoute>
-                  <ManageDentists/>
+                  <ManageDentists role={roles[0]}/>
                 </PrivateRoute>
             } />
-            <Route path='/patients-profile' element={
-                
-                  <PatientDetails/>
-                
+            <Route path='/patients/:id' element={
+                <PrivateRoute>
+                  <ManagePatientProfile role={roles[0]}/>            
+                </PrivateRoute>
             } />
             <Route path='/treatment-plans/:id' element={<TreatmentPlanDetails/>} />
-            <Route path='/staffs' element={<ManageStaff/>} />
-            <Route path='/treatment-plans/add-new-one/add' element={<AddTreatmentPlan/>} />
+            <Route path='/staffs' element={
+              <PrivateRoute>
+                <ManageStaff role={ roles[0]}/>
+              </PrivateRoute>
+            } />
+            
           </Routes>
         </BrowserRouter>
       {/* <BrowserRouter>

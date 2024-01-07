@@ -3,13 +3,13 @@ import Header from './Header'
 import Sidebar from './Sidebar'
 import StaffList from './StaffList'
 
-const ManageStaff = () => {
+const ManageStaff = ({role}) => {
   return (
     <>
         <section id='interface'>
             <Header/>
             <Sidebar/>
-            <StaffList/>
+            <StaffList role={role}/>
         </section>
     </>
   )

@@ -1,6 +1,10 @@
+import { faUser } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import React from "react";
+import useAuth from "../hooks/useAuth";
 
 const Header = () => {
+    const auth = useAuth();
     return (
         <div className="navigation justify-content-end">
             
@@ -11,10 +15,10 @@ const Header = () => {
                             <ul className="navbar-nav">
                                 <li className="nav-item dropdown">
                                     <button className="user-btn btn btn-dark dropdown-toggle bg-white text-black" data-bs-toggle="dropdown" aria-expanded="false">
-                                        <img src="" alt="" />
+                                        <FontAwesomeIcon icon={faUser} className="mt-3"/>
                                     </button>
                                     <ul className="dropdown-menu dropdown-menu-white">
-                                        <li><a className="dropdown-item" href="#">Logout</a></li>
+                                        <li><div className="dropdown-item">Logout</div></li>
                                     </ul>
                                 </li>
                             </ul>

@@ -1,38 +1,41 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
 import useAuth from "../hooks/useAuth";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEdit, faEye, faInfo, faSearch } from "@fortawesome/free-solid-svg-icons";
 
-const PatientList = ({onClickDetail}) =>  {
+const PatientList = ({role}) =>  {
   const auth = useAuth();
+  const navigate = useNavigate();
   const [clickShowDetail, setClickShowDetail] = useState(false);
   const [patients, setPatients] = useState([]);
   const [name, setName] = useState('');
   const [address, setAddress] = useState('');
   const [dob, setDob] = useState(null);
-  const [email, setEmail] = useState('');
   const [gender, setGender] = useState('Male');
   const [phoneNumber, setPhoneNumber] = useState('');
-  const [errorMsg, setErrorMsg] = useState('')
+  const [errorMsg, setErrorMsg] = useState('');
+  const [selectedPatient, setSelectedPatient] = useState(null)
   const [searchTerm, setSearchTerm] = useState('')
   const [currentPage, setCurrentPage] = useState(0);
   const [totalPages, setTotalPages] = useState(0);
-  const [searchPage, setSearchPage] = useState('')
+  const [searchPage, setSearchPage] = useState('');
   const maxPageDisplay = 5;
   const fetchPatients = async () => {
-    const res = await axios.get(`http://localhost:8080/patients`, {
-      headers: {
-        "Content-Type": "application/json",
-        "Authorization": `Bearer ${auth.accessToken}`,
-      },
-      params: {
-        page: currentPage
-      }
-    });
-    setTotalPages(res.data.totalPages)
-    setPatients(res.data.patients);
+   
+      const res = await axios.get(`http://localhost:8080/patients`, {
+        headers: {
+          "Content-Type": "application/json",
+          "Authorization": `Bearer ${auth.accessToken}`,
+        },
+        params: {
+          page: currentPage
+        }
+      });
+      setTotalPages(res.data.totalPages)
+      setPatients(res.data.patients);
+    
   };
   const fetchPatientByName = async () => {
     const res = await axios.get(`http://localhost:8080/patients`, {
@@ -45,17 +48,15 @@ const PatientList = ({onClickDetail}) =>  {
         patientName: searchTerm
       }
     });
-    setCurrentPage(res.data.currentPage);
+    
     setTotalPages(res.data.totalPages);
     setPatients(res.data.patients);
   }
   useEffect(() => {
     fetchPatients();
-  }, []);
+  }, [currentPage]);
 
-  const sendClickDetail = () =>{
-    onClickDetail(!clickShowDetail)
-  }
+  
   
 
   const handleUpdate = async (patientId) => {
@@ -111,15 +112,30 @@ const PatientList = ({onClickDetail}) =>  {
       await fetchPatientByName();
     }
   }
+  const viewDetails = (patient) => {
+    console.log('view details');
+    navigate(`/patients/${patient.id}`, {state: {patient}})
+  }
+  
+  const editPatient = (patient) => {
+    setSelectedPatient(patient);
+    setAddress(patient.address);
+    setDob(patient.dob);
+    setName(patient.name);
+    setPhoneNumber(patient.phoneNumber);
+  }
   
 
   return (
-    !onClickDetail && <>
+    <>
       <div className="d-flex">
           <h3 className="i-name">Patient Profiles</h3>
           <div className="d-flex mx-5" role="search">
             <input className="form-control me-2 ms-auto h-50 mt-5 me-5" type="search" placeholder="Search" aria-label="Search" onChange={(e) => setSearchTerm(e.target.value)}/>
-            <button className="btn btn-success ms-auto h-50 mt-5 me-5" type="submit"><FontAwesomeIcon icon={faSearch} onClick={handleSearch}/></button>
+            <button className="btn btn-success ms-auto h-50 mt-5 me-5" type="submit"><FontAwesomeIcon icon={faSearch} onClick={(e) => {
+              e.preventDefault();
+              handleSearch();
+              }}/></button>
           </div>
           <button type="button" className="btn btn-primary ms-auto h-50 mt-5 me-5" data-bs-toggle="modal" data-bs-target="#addPatientModel">Add patient</button>
       </div>
@@ -136,11 +152,12 @@ const PatientList = ({onClickDetail}) =>  {
               <th scope="col">Address</th>
               <th scope="col">Phone Number</th>
               <th scope="col">Edit</th>
+              
             </tr>
           </thead>
           <tbody>
           {patients && patients.map((patient, idx) => (
-          <tr key={patient.id} onClick={sendClickDetail}>
+          <tr key={patient.id} onClick={() => viewDetails(patient)}>
             <th scope="row">{idx+1}</th>
             <td>{patient.name}</td>
             <td>{patient.gender}</td>
@@ -151,50 +168,51 @@ const PatientList = ({onClickDetail}) =>  {
             {/* <Link to={`/patients-profile`} state={{patientData: patient}}>
               <div className="px-3"><FontAwesomeIcon icon={faEye} style={{'color' : 'green'}}/></div>
             </Link> */}
-              <div data-bs-toggle="modal" data-bs-target="#editModal"><FontAwesomeIcon icon={faEdit} style={{'color': 'green'}}/></div>
-              <div className="modal fade" id="editModal" tabIndex={'-1'} aria-labelledby="editModalLabel" aria-hidden="true">
-                <div className="modal-dialog">
-                  <div className="modal-content">
-                    <div className="modal-header">
-                      <h1 className="modal-title fs-5 fw-bold" id="editModalLabel">Update Patient</h1>
-                      <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                    </div>
-                    <div className="modal-body">
-                    <div className="mb-3">
-                      <label htmlFor="nameToUpdate" className="form-label">Full name</label>
-                      <input type="text" className="form-control" id="nameToUpdate" onChange={(e) => setName(e.target.value)} defaultValue={patient.name} required/>
-                    </div>
-                    <div className="mb-3">
-                      <label htmlFor="addressToUpdate" className="form-label">Address</label>
-                      <input type="text" className="form-control" id="addressToUpdate" onChange={(e) => setAddress(e.target.value)} defaultValue={patient.address} required/>
-                    </div>
-                    <div className="mb-3">
-                      <label htmlFor="phoneNumberToUpdate" className="form-label">Phone number</label>
-                      <input type="text" className="form-control" id="phoneNumberToUpdate" onChange={(e) => setPhoneNumber(e.target.value)} defaultValue={patient.phoneNumber} required/>
-                    </div>
-                    
-                    <div className="mb-3">
-                      <label htmlFor="addressToUpdate" className="form-label">Address</label>
-                      <input type="text" className="form-control" id="addressToUpdate" onChange={(e) => setAddress(e.target.value)} defaultValue={patient.address} required/>
-                    </div>
-                    <div className="mb-3">
-                      <label htmlFor="dobToUpdate" className="form-label">Day of birth</label>
-                      <input type="date" className="form-control" id="dobToUpdate" onChange={(e) => setDob(e.target.value)} value={patient.dob} required/>
-                    </div>
-        
-                    </div>
-                    <div className="modal-footer">
-                      <button type="button" className="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                      <button type="button" className="btn btn-primary" onClick={() => handleUpdate(patient.id) }>Update</button>
-                    </div>
-                  </div>
-                </div>
-              </div>
+              <div data-bs-toggle="modal" data-bs-target="#editModal"><FontAwesomeIcon icon={faEdit} style={{'color': 'green'}} onClick={() => editPatient(patient)}/></div>
+              
             </td>
           </tr>
         ))}
           </tbody>
         </table>
+      </div>
+      <div className="modal fade" id="editModal" tabIndex={'-1'} aria-labelledby="editModalLabel" aria-hidden="true">
+        <div className="modal-dialog">
+          <div className="modal-content">
+            <div className="modal-header">
+              <h1 className="modal-title fs-5 fw-bold" id="editModalLabel">Update Patient</h1>
+              <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div className="modal-body">
+            <div className="mb-3">
+              <label htmlFor="nameToUpdate" className="form-label">Full name</label>
+              <input type="text" className="form-control" id="nameToUpdate" onChange={(e) => setName(e.target.value)} defaultValue={name} required/>
+            </div>
+            <div className="mb-3">
+              <label htmlFor="addressToUpdate" className="form-label">Address</label>
+              <input type="text" className="form-control" id="addressToUpdate" onChange={(e) => setAddress(e.target.value)} defaultValue={address} required/>
+            </div>
+            <div className="mb-3">
+              <label htmlFor="phoneNumberToUpdate" className="form-label">Phone number</label>
+              <input type="text" className="form-control" id="phoneNumberToUpdate" onChange={(e) => setPhoneNumber(e.target.value)} defaultValue={phoneNumber} required/>
+            </div>
+                    
+            <div className="mb-3">
+              <label htmlFor="addressToUpdate" className="form-label">Address</label>
+              <input type="text" className="form-control" id="addressToUpdate" onChange={(e) => setAddress(e.target.value)} defaultValue={address} required/>
+            </div>
+            <div className="mb-3">
+              <label htmlFor="dobToUpdate" className="form-label">Day of birth</label>
+              <input type="date" className="form-control" id="dobToUpdate" onChange={(e) => setDob(e.target.value)} value={dob} required/>
+            </div>
+        
+            </div>
+            <div className="modal-footer">
+              <button type="button" className="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+              <button type="button" className="btn btn-primary" onClick={() => handleUpdate(patient.id) }>Update</button>
+            </div>
+          </div>
+        </div>
       </div>
       <div className="modal fade" id="addPatientModel" tabIndex="-1" aria-labelledby="addPatientModelLabel" aria-hidden="true">
         <div className="modal-dialog">
@@ -221,6 +239,12 @@ const PatientList = ({onClickDetail}) =>  {
                     <label htmlFor="addDOB" className="form-label">Day of birth</label>
                     <input type="date" className="form-control" id="addBOB" onChange={(e) => setDob(e.target.value)} value={dob}/>
                   </div>
+                  <select class="form-select" aria-label="Select gender" onChange={(e) => setGender(e.target.value)}>
+                    <option selected>Gender</option>
+                    <option value="Male">Male</option>
+                    <option value="Female">Female</option>
+                    
+                  </select>
             </div>
             <div className="modal-footer">
               <button type="button" className="btn btn-secondary" data-bs-dismiss="modal">Close</button>

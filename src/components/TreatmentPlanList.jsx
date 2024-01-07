@@ -6,15 +6,21 @@ import { Link } from 'react-router-dom'
 
 const TreatmentPlanList = ({treatmentPlans}) => {
   const [selectedTreatmentPlan, setSelectedTreatmentPlan] = useState(null);
+  const styleOfStatus = (status) => {
+    if(status === 'Completed'){
+      return 'green'
+    } 
+    if(status === 'Cancelled'){
+      return 'red';
+    }
+    return 'blue';
+  }
   return (
     <>
-        <div className='d-flex justify-content-end mb-3'>
-          <Link to={'/treatment-plans/add-new-one/add'}>
-            <div className='btn btn-primary'>Add treatment plan</div>
-          </Link>
-          
-
+        <div className="panel-heading text-center mt-5 mb-4">
+          <h3 className="panel-title">Treatment plan</h3>
         </div>
+
         
         <table className="table table-striped">
             <thead className="table-dark">
@@ -29,8 +35,8 @@ const TreatmentPlanList = ({treatmentPlans}) => {
             {treatmentPlans.map((treatmentPlan, idx) => (
                 <tr key={idx}>
                     <th scope='row'>{idx+1}</th>
-                    <td>{treatmentPlan.startingDate}</td>
-                    <td><div className={`btn text-light text-center fw-bold ${treatmentPlan === 'Completed' ? 'green' : 'red'}`}>{treatmentPlan.status}</div></td>
+                    <td>{treatmentPlan.startDate}</td>
+                    <td><div className={`btn text-light text-center fw-bold ${styleOfStatus(treatmentPlan.status)}`}>{treatmentPlan.status}</div></td>
                     <td>
                         <div className='d-flex'>
                           <Link to={`/treatment-plans/${treatmentPlan.id}`} state={{treatmentPlan}}>
@@ -39,23 +45,8 @@ const TreatmentPlanList = ({treatmentPlans}) => {
                           <div  className="mx-3" data-bs-toggle="modal" data-bs-target="#updateTreatmentPlanModel">
                             <FontAwesomeIcon icon={faEdit} style={{color: 'green'}}/>
                           </div>
-                          <div className="modal fade" id="updateTreatmentPlanModel" tabIndex="-1" aria-labelledby="updateTreatmentPlanModelLabel" aria-hidden="true">
-                              <div className="modal-dialog">
-                              <div className="modal-content">
-                                  <div className="modal-header">
-                                  <h1 className="modal-title fs-5 fw-bold text-center" id="addTreatmentPlanModelLabel">Edit treatment plan</h1>
-                                  <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                                  </div>
-                                  <div className="modal-body">
-
-                                  </div>
-                                  <div className="modal-footer">
-                                  <button type="button" className="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                                  <button type="button" className="btn btn-primary">Add</button>
-                                  </div>
-                              </div>
-                              </div>
-                          </div>
+                          
+                          
                         </div>
                         
                     </td>
@@ -65,24 +56,7 @@ const TreatmentPlanList = ({treatmentPlans}) => {
             ))}
             </tbody>
         </table>
-        <button type="button" className="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addTreatmentPlanModel">Add staff</button>
-      <div className="modal fade" id="addTreatmentPlanModel" tabIndex="-1" aria-labelledby="addTreatmentPlanModelLabel" aria-hidden="true">
-        <div className="modal-dialog">
-          <div className="modal-content">
-            <div className="modal-header">
-              <h1 className="modal-title fs-5 fw-bold text-center" id="addTreatmentPlanModelLabel">Add patient</h1>
-              <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div className="modal-body">
-                  
-            </div>
-            <div className="modal-footer">
-              <button type="button" className="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-              <button type="button" className="btn btn-primary">Add</button>
-            </div>
-          </div>
-        </div>
-      </div>
+        Chu
         
     </>
   )

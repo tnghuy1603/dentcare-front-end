@@ -27,10 +27,10 @@ const Sidebar = () => {
                 <li onClick={() => setSelected(1)} style={getLiStyle(1)}><i className="fa-solid fa-house"></i><Link to={"/"}>Dashboard</Link></li>
                 <li onClick={() => setSelected(6)} style={getLiStyle(6)}><i className="fa-solid fa-user"></i><Link to={"/dentists"}>Dentist profiles</Link></li>
                 <li onClick={() => setSelected(8)} style={getLiStyle(8)}><i className="fa-solid fa-user"></i><Link to={"/patients"}>Patient profiles</Link></li>
-                <li onClick={() => setSelected(2)} style={getLiStyle(2)}><i className="fa-solid fa-users"></i><Link to={"/manage-staffs"}>Manage staffs</Link></li>
+                <li onClick={() => setSelected(2)} style={getLiStyle(2)}><i className="fa-solid fa-users"></i><Link to={"/staffs"}>Manage staffs</Link></li>
                 <li onClick={() => setSelected(3)} style={getLiStyle(3)}><i className="fa-solid fa-calendar-check"></i><Link to={"/appointments"}>Manage appointments</Link></li>
-                <li onClick={() => setSelected(4)} style={getLiStyle(4)}><i className="fa-solid fa-calendar-days"></i><Link to={"/manage-schedules"}>Manage schedules</Link></li>
-                <li onClick={() => setSelected(5)} style={getLiStyle(5)}><i className="fa-solid fa-stethoscope"></i><Link to={"/manage-drugs"}>Manage drugs</Link></li>
+                <li onClick={() => setSelected(4)} style={getLiStyle(4)}><i className="fa-solid fa-calendar-days"></i><Link to={"/dentist-schedules"}>Manage schedules</Link></li>
+                <li onClick={() => setSelected(5)} style={getLiStyle(5)}><i className="fa-solid fa-stethoscope"></i><Link to={"/medicines"}>Manage drugs</Link></li>
                 <li onClick={() => setSelected(7)} style={getLiStyle(7)}><i className="fa-solid fa-chart-simple"></i><Link to={"/statistics"}>Statistics</Link></li>
             </div>
         </section>

@@ -1,16 +1,17 @@
 import React from 'react'
+import PatientDetails from './PatientProfile'
 import Header from './Header'
 import Sidebar from './Sidebar'
-import DentistList from './DentistList'
 
-const ManageDentists = ({role}) => {
+const ManagePatientProfile = ({role}) => {
   return (
     <section id='interface'>
         <Header/>
         <Sidebar/>
-        <DentistList role={role}/>
+        
+        <PatientDetails/>
     </section>
   )
 }
 
-export default ManageDentists
+export default ManagePatientProfile

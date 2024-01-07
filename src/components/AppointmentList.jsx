@@ -5,7 +5,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faMagnifyingGlass, faSearch } from '@fortawesome/free-solid-svg-icons';
 import DentistList from './DentistList';
 
-const AppointmentList = () => {
+const AppointmentList = ({role}) => {
     const auth = useAuth()
     const [date, setDate] = useState(new Date());
     const [appointments, setAppointments] = useState([])
@@ -23,7 +23,7 @@ const AppointmentList = () => {
     console.log(formatDateToISO(date));
     const [room, setRoom] = useState('');
     const fetchAppointments = async () => {
-      const res = await axios.get(`http://localhost:8080/appointments/2024-01-02`, {
+      const res = await axios.get(`http://localhost:8080/appointments/${formatDateToISO(date)}`, {
         headers: {
             'Content-Type': 'application/json',
             'Authorization': `Bearer ${auth.accessToken}`
@@ -72,7 +72,7 @@ const AppointmentList = () => {
                 break;
         }
         console.log('Params', params)
-        const res = await axios.get(`http://localhost:8080/appointments/2024-01-02`, {
+        const res = await axios.get(`http://localhost:8080/appointments/${formatDateToISO(date)}`, {
             headers: {
                 'Content-Type': 'application/json',
                 'Authorization': `Bearer ${auth.accessToken}`
@@ -87,16 +87,18 @@ const AppointmentList = () => {
         fetchDentists();
     }, [])
     useEffect(() => {
-
+        
     }, [])
     
     
   return (
     <>
+        
       <div className="d-flex">
         <h3 className="i-name">Manage Appointments</h3>
             <input type="date" className='me-2 ms-auto mt-5 me-5' defaultValue={formatDateToISO}/>
-            <button type="button" className="btn btn-info ms-auto h-50 mt-5 me-5" data-bs-toggle="modal" data-bs-target="#AddModal">Add appointment</button>
+            {(role.includes('ROLE_ADMIN') || role.includes('ROLE_STAFF')) && <button type="button" className="btn btn-info ms-auto h-50 mt-5 me-5" data-bs-toggle="modal" data-bs-target="#AddModal">Add appointment</button>
+}
         </div>
         <div className='d-flex justify-content-start align-items-center mt-3'>
             <form className='mx-3 d-flex justify-content-start align-items-center'>
@@ -139,7 +141,8 @@ const AppointmentList = () => {
                     <td>Assistant</td>
                     <td>Room</td>
                     <td>Status</td>
-                    <td>Edit</td>
+                    {((role.includes('ROLE_ADMIN') || role.includes('ROLE_STAFF') )) && <td>Edit</td>}
+                    
                 </tr>
             </thead>
 
@@ -153,10 +156,13 @@ const AppointmentList = () => {
                         <td>{appoinment?.assistant?.name}</td>
                         <td>{appoinment.room}</td>
                         <td>{appoinment.status}</td>
-                        <td className="edit text-center">
-                           <a href="#" className="me-4" data-bs-toggle="modal" data-bs-target="#EditModal">Edit</a>
-                            <a href="#" type="button" data-bs-toggle="modal" data-bs-target="#DeleteModal">Delete</a>
-                        </td>
+                        {(role.includes('ROLE_ADMIN') || role.includes('ROLE_STAFF') ) && <>
+                            <td className="edit text-center">
+                            <a href="#" className="me-4" data-bs-toggle="modal" data-bs-target="#EditModal">Edit</a>
+                                <a href="#" type="button" data-bs-toggle="modal" data-bs-target="#DeleteModal">Delete</a>
+                            </td>
+                        </>}
+                        
                     </tr>))}
             </tbody>
         </table>
