@@ -17,6 +17,8 @@ const AddTreatmentPlan = () => {
   const [selectedToTreat, setSelectedToTreat] = useState([]);
   const [selectedDentistId, setSelectedDentistId] = useState(null)
   const [selectedTreamentCodeIds, selectedTreatmentCodeIds] = useState([]);
+  
+  
   const apiUrl = 'http://localhost:8080';
   const fetchDentists = async () => {
     const res = await axios.get(`${apiUrl}/users/all`, {

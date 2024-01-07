@@ -10,7 +10,7 @@ const TreatmentPlanList = ({treatmentPlans}) => {
     <>
         <div className='d-flex justify-content-end mb-3'>
           <Link to={'/treatment-plans/add-new-one/add'}>
-            <div className='btn btn'><FontAwesomeIcon icon={faAdd} style={{color: 'blue'}}/></div>
+            <div className='btn btn-primary'>Add treatment plan</div>
           </Link>
           
 
