@@ -21,6 +21,7 @@ const Login = () => {
         }
       );
       console.log(res.status);
+      console.log(res.data);
       auth.setAccessToken(res.data.accessToken);
       window.location.href = "/dashboard";
     } catch (error) {

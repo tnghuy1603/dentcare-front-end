@@ -1,19 +1,16 @@
-import React from 'react'
-import { useLocation } from 'react-router-dom'
+import React from "react";
 
-const TreatmentPlanDetails = () => {
-  const location = useLocation();
-  const { treatmentPlan } = location.state
-  return (
-    <>
-      <div className="container-fluid">
+const InvoiceDetails = () => {
+    return (
+        <>
+            <div className="container-fluid">
         <div className="row justify-content-center">
           <div className="w-100 col-xs-12 col-sm-12 col-md-6 col-lg-6 col-xs-offset-0 col-sm-offset-0 col-md-offset-3 col-lg-offset-3 toppad" >
 
 
             <div className="panel panel-info">
               <div className="panel-heading text-center mb-4">
-                <h3 className="panel-title">Patient Profile</h3>
+                <h3 className="panel-title">Invoice detail</h3>
               </div>
               <div className="panel-body">
                 <div className="row justify-content-center">
@@ -21,36 +18,37 @@ const TreatmentPlanDetails = () => {
                     <table className="table table-user-information">
                       <tbody>
                         <tr>
-                          <td> <b>Personal Information: </b></td>
+                          <td> <b>Information: </b></td>
                           <td></td>
                         </tr>
                         <tr>
-                          <td>ID:</td>
+                          <td>Date:</td>
                           <td> {patient.id}</td>
                         </tr>
                         <tr>
-                          <td>Patient name:</td>
+                          <td>Name:</td>
                           <td> {patient.name}</td>
                         </tr>
                         <tr>
-                          <td>Gender:</td>
+                          <td>Total:</td>
                           <td>{patient.gender}</td>
                         </tr>
                         <tr>
-                          <td>Age:</td>
+                          <td>Paid:</td>
                           <td>{getAge(patient.dob)}</td>
                         </tr>
                         <tr>
-                          <td>Oral health:</td>
+                          <td>Charge:</td>
                           <td>{patient.oralHealth}
                             <a href="">Update</a>
                           </td>
                         </tr>
 
                         <tr>
-                          <td>Phone:</td>
+                          <td>Type of payment:</td>
                           <td>{patient.phoneNumber}</td>
                         </tr>
+
                       </tbody>
                     </table>
                   </div>
@@ -60,8 +58,8 @@ const TreatmentPlanDetails = () => {
           </div>
         </div>
       </div>
-    </>
-  )
+        </>
+    )
 }
 
-export default TreatmentPlanDetails
+export default InvoiceDetails

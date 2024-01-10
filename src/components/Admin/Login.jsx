@@ -11,9 +11,10 @@ const Login = () => {
     const res = await axios.post('http://localhost:8080/auth/login', {email, password}, {
       headers: {
         'Content-Type' : 'application/json'
-      }
+      },
     })
     auth.setAccessToken(res.data.accessToken);
+    console.log(res.data);
     window.location.href = '/dashboard'
 
   }

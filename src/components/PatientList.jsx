@@ -239,8 +239,8 @@ const PatientList = ({role}) =>  {
                     <label htmlFor="addDOB" className="form-label">Day of birth</label>
                     <input type="date" className="form-control" id="addBOB" onChange={(e) => setDob(e.target.value)} value={dob}/>
                   </div>
-                  <select class="form-select" aria-label="Select gender" onChange={(e) => setGender(e.target.value)}>
-                    <option selected>Gender</option>
+                  <select className="form-select" aria-label="Select gender" onChange={(e) => setGender(e.target.value)}>
+                    <option defaultValue={"gender"}>Gender</option>
                     <option value="Male">Male</option>
                     <option value="Female">Female</option>
                     

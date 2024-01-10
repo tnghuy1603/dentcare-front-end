@@ -8,6 +8,7 @@ import Allergy from './Allergy';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEdit } from '@fortawesome/free-solid-svg-icons';
 import {tableCellClasses ,styled, Paper, Stepper, StepLabel, Step, TextField, Button, InputLabel, Select, MenuItem, FormControl, Card, CardHeader, CardContent, TableContainer, Table, TableHead, TableBody, TableRow, TableCell, Checkbox, FormControlLabel } from '@mui/material';
+import InvoiceList from './InvoiceList';
 
 function PatientDetails({ role }) {
     const [currentStep, setCurrentStep] = useState(1);
@@ -465,6 +466,7 @@ function PatientDetails({ role }) {
                                             </tbody>
                                         </table>
 
+                                        <InvoiceList/>
                                         <div className="panel-heading text-center mt-5">
                                             <h3 className="panel-title">Allergic medicines</h3>
                                         </div>
