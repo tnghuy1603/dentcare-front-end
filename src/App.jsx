@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import './App.css'
-import { BrowserRouter, Route, Routes } from 'react-router-dom'
+import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom'
 import Footer from './components/Footer'
 import Login from './components/Login'
 import PrivateRoute from './components/PrivateRoute'
@@ -23,6 +23,9 @@ import TreatmentPlanDetails from './components/TreatmentPlanDetails'
 import AddTreatmentPlan from './components/AddTreatmentPlan'
 import ManagePatientProfile from './components/ManagePatientProfile'
 import ManageMedicines from './components/ManageMedicines'
+import Statistics from './components/Statistics'
+import ManageSchedules from './components/ManageSchedules'
+import InvoiceDetails from './components/InvoiceDetails'
 
 
 
@@ -52,8 +55,9 @@ function App() {
     <>
         <BrowserRouter>
           <Routes>
+            <Route path='/' element={<Navigate to={'/login'} replace/>}/>
             <Route path='/dashboard' element={
-                <Dashboard/>
+                <Dashboard role={roles[0]}/>
             }/>
             <Route path="/login" element={<Login/>}/>
             <Route path='/patients' element={
@@ -81,12 +85,29 @@ function App() {
                   <ManagePatientProfile role={roles[0]}/>            
                 </PrivateRoute>
             } />
+            <Route path='/invoices/:id' element={
+                <PrivateRoute>
+                  <InvoiceDetails/>          
+                </PrivateRoute>
+            } />
             <Route path='/treatment-plans/:id' element={<TreatmentPlanDetails/>} />
             <Route path='/staffs' element={
               <PrivateRoute>
                 <ManageStaff role={ roles[0]}/>
               </PrivateRoute>
             } />
+            <Route path='/statistics' element={
+              <PrivateRoute>
+                <Statistics role={ roles[0]}/>
+              </PrivateRoute>
+            } />
+            <Route path='/dentist-schedules' element = {
+              <PrivateRoute>
+                <ManageSchedules/>
+              </PrivateRoute>
+            }>
+
+            </Route>
             
           </Routes>
         </BrowserRouter>

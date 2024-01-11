@@ -3,7 +3,7 @@ import React, { useEffect, useState } from 'react'
 import useAuth from '../hooks/useAuth';
 import Header from './Header';
 import Sidebar from './Sidebar';
-import ManageDrug from './Admin/ManageDrug';
+
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faAdd } from '@fortawesome/free-solid-svg-icons';
 import { faEdit } from '@fortawesome/free-regular-svg-icons';
@@ -74,6 +74,7 @@ const DentistList = ({role}) => {
         setPhoneNumber('');
         setSelectedBranchId(null);
         setDentists([...dentists, res.data])
+        $('#addModal').modal('hide');
     } catch (error) {
         console.log(error.response)
     }
@@ -94,7 +95,9 @@ const DentistList = ({role}) => {
     setAddress('');
     setPhoneNumber('');
     setSelectedBranchId(null);
+    setSelecetedDentist(null)
     setDentists(dentists.map(dentist => dentist.id === selectedDentist.id ? res.data: dentist))
+    $('#editModal').modal('hide');
   }
   const popUpEditModal = (dentist) => {
     setSelecetedDentist(dentist)
@@ -174,16 +177,12 @@ const DentistList = ({role}) => {
                             <input type="text" className="form-control" id="phoneNumberToUpdate" onChange={(e) => setPhoneNumber(e.target.value)} defaultValue={selectedDentist?.phoneNumber}/>
                         </div>
                         <div className="mb-3">
-                            <label htmlFor="emailToUpdate" className="form-label">Email address</label>
-                            <input type="email" className="form-control" id="emailToUpdate" onChange={(e) => setEmail(e.target.value)} defaultValue={selectedDentist?.email}/>
-                        </div>
-                        <div className="mb-3">
                             <label htmlFor="dobToUpdate" className="form-label">Day of brith</label>
                             <input type="date" className="form-control" id="dobToUpdate" onChange={(e) => setDob(e.target.value)} defaultValue={selectedDentist?.dob}/>
                         </div>
                         <div className="mb-3">
                             <label htmlFor="emailToUpdate" className="form-label">Email address</label>
-                            <input type="email" className="form-control" id="emailToUpdate" onChange={(e) => setEmail(e.target.value)} defaultValue={selectedDentist?.email} value={email}/>
+                            <input type="email" className="form-control" id="emailToUpdate" onChange={(e) => setEmail(e.target.value)} defaultValue={selectedDentist?.email}/>
                         </div>
                         <select class="form-select" aria-label="Default select example" onChange={(e) => setSelectedBranchId(e.target.value)} required>
                             <option selected>Select branch</option>

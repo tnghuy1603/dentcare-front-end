@@ -8,6 +8,7 @@ const ManageSchedules = ({role}) => {
       <section id='interface'>
         <Header/>
         <Sidebar/> 
+        <Schedules/>
       </section>
     </>
   )

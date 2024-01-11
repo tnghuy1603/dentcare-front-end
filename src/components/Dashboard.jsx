@@ -3,15 +3,15 @@ import Header from './Header'
 import Sidebar from './Sidebar'
 import { BrowserRouter, Route, Routes } from 'react-router-dom'
 import Statistics from './Statistics'
-import Home from './Admin/Home'
+import Home from './Home'
 
-const Dashboard = () => {
+const Dashboard = ({role}) => {
   return (
     <>
         <section id="interface">
             <Header/>
             <Sidebar/>
-            <Home/>           
+            <Home role={role}/>           
         </section>
     </>
   )

@@ -7,8 +7,6 @@ const Header = () => {
     const auth = useAuth();
     return (
         <div className="navigation justify-content-end">
-            
-
             <div className="profile">
                 <nav className="navbar navbar-expand-lg navbar-dark bg-white">
                         <div className="collapse navbar-collapse" id="navbarNavDarkDropdown">

@@ -49,11 +49,13 @@ const MedicineList = ({role}) => {
             },
             
       });
+      $('#addModel').modal('hide');
       setMedicines([...medicines, res.data]);
       setName('');
       setPrice(null);
       setExpireDate(null);
       setDescription('');
+      
       
     }
   return (

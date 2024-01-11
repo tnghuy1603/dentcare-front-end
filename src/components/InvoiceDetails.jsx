@@ -1,63 +1,66 @@
-import React from "react";
+import axios from "axios";
+import React, { useEffect, useState } from "react";
+import { useLocation } from "react-router-dom";
+import Sidebar from "./Sidebar";
+import Header from "./Header";
+import useAuth from "../hooks/useAuth";
 
 const InvoiceDetails = () => {
+  const location = useLocation();
+  const auth = useAuth();
+  const invoice = location.state;
+  console.log('State', location.state);
+  const [treatments, setTreatments] = useState([]);
+    const fetchTreatments = async () => {
+      const res = await axios.get(`http://localhost:8080/treatments`, {
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${auth.accessToken}`
+        },
+        params: {
+          treatmentPlan: invoice.id
+        }
+      });
+      console.log("Treatments", res.data);
+      setTreatments(res.data)
+    }
+    useEffect(() => {
+      fetchTreatments();
+    }, [])
     return (
         <>
-            <div className="container-fluid">
-        <div className="row justify-content-center">
-          <div className="w-100 col-xs-12 col-sm-12 col-md-6 col-lg-6 col-xs-offset-0 col-sm-offset-0 col-md-offset-3 col-lg-offset-3 toppad" >
-
-
-            <div className="panel panel-info">
-              <div className="panel-heading text-center mb-4">
-                <h3 className="panel-title">Invoice detail</h3>
-              </div>
-              <div className="panel-body">
-                <div className="row justify-content-center">
-                  <div className=" col-md-9 col-lg-9 ">
-                    <table className="table table-user-information">
-                      <tbody>
-                        <tr>
-                          <td> <b>Information: </b></td>
-                          <td></td>
-                        </tr>
-                        <tr>
-                          <td>Date:</td>
-                          <td> {patient.id}</td>
-                        </tr>
-                        <tr>
-                          <td>Name:</td>
-                          <td> {patient.name}</td>
-                        </tr>
-                        <tr>
-                          <td>Total:</td>
-                          <td>{patient.gender}</td>
-                        </tr>
-                        <tr>
-                          <td>Paid:</td>
-                          <td>{getAge(patient.dob)}</td>
-                        </tr>
-                        <tr>
-                          <td>Charge:</td>
-                          <td>{patient.oralHealth}
-                            <a href="">Update</a>
-                          </td>
-                        </tr>
-
-                        <tr>
-                          <td>Type of payment:</td>
-                          <td>{patient.phoneNumber}</td>
-                        </tr>
-
-                      </tbody>
-                    </table>
-                  </div>
-                </div>
-              </div>
+            <div id="interface">
+              <Header/>
+              <Sidebar/>
+              <div className="d-flex">
+                <h3 className="i-name">Invoice details</h3>
             </div>
-          </div>
-        </div>
-      </div>
+              <div className="board mt-4 d-flex justify-content-center">
+                <table className="table table-striped">
+                    <thead className="table-dark">
+                        <tr>
+                            <th scope="col">#</th>
+                            {/* <th scope="col">Id</th> */}
+                            <th scope="col">Description</th>
+                            <th scope="col">Fee</th>
+                            <th scope="col">Peform at</th>
+                            <th scope="col">Payment method</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {treatments && treatments.map((treatment, idx) => (
+                            <tr key={invoice.id}>
+                                <th scope="row">{idx + 1}</th>
+                                <td>{treatment.description}</td>
+                                <td>{treatment.fee}</td>
+                                <td>{treatment.performAt ? treatment.performAt: 'Not yet'}</td>
+                                <td>{invoice.method}</td>                                                         
+                            </tr>
+                        ))}
+                    </tbody>
+                </table>
+            </div>
+            </div>
         </>
     )
 }

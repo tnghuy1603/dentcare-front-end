@@ -157,7 +157,7 @@ const PatientList = ({role}) =>  {
           </thead>
           <tbody>
           {patients && patients.map((patient, idx) => (
-          <tr key={patient.id} onClick={() => viewDetails(patient)}>
+          <tr key={patient.id}>
             <th scope="row">{idx+1}</th>
             <td>{patient.name}</td>
             <td>{patient.gender}</td>
@@ -165,11 +165,11 @@ const PatientList = ({role}) =>  {
             <td>{patient.address}</td>
             <td>{patient.phoneNumber}</td>
             <td colSpan={1} className="d-flex gap-3 align-middle">
-            {/* <Link to={`/patients-profile`} state={{patientData: patient}}>
+            <Link to={`/patients/${patient.id}`} state={{patient}}>
               <div className="px-3"><FontAwesomeIcon icon={faEye} style={{'color' : 'green'}}/></div>
-            </Link> */}
+            </Link>
               <div data-bs-toggle="modal" data-bs-target="#editModal"><FontAwesomeIcon icon={faEdit} style={{'color': 'green'}} onClick={() => editPatient(patient)}/></div>
-              
+            
             </td>
           </tr>
         ))}

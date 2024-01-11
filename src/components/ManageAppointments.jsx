@@ -4,7 +4,6 @@ import Sidebar from './Sidebar'
 import AppointmentList from './AppointmentList'
 
 const ManageAppointments = ({role}) => {
-  
   return (
     <>
         <div id='interface'>

@@ -72,6 +72,7 @@ const PrivateRoute = ({children}) => {
     } else{
         return  <Navigate to={'/login'}/>
     }
+    
 
 }
 

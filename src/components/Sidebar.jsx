@@ -4,20 +4,21 @@ import { Link } from "react-router-dom";
 
 const Sidebar = () => {
     const [selected, setSelected] = useState(null);
-    const handleClickSelected = (index) => {
-        // let lastClick = new Date().getTime() - 200;
-        // const now = new Date().getTime();
-        // if (selected === index && now - lastClick < 300) {
-        //     return;
-        // }
-        setSelected(index);
-        // lastClick = now;
-    }
+    // const handleClickSelected = (index) => {
+    //     // let lastClick = new Date().getTime() - 200;
+    //     // const now = new Date().getTime();
+    //     // if (selected === index && now - lastClick < 300) {
+    //     //     return;
+    //     // }
+    //     setSelected(index);
+    //     // lastClick = now;
+    // }
     const getLiStyle = (index) => {
         return {
             borderLeft: index === selected ? '4px solid #fff' : 'none',
         }
     }
+    
     return (
         <section className="active" id="menu">
             <div className="logo">

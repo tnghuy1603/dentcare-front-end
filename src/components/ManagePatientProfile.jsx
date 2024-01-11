@@ -8,8 +8,7 @@ const ManagePatientProfile = ({role}) => {
     <section id='interface'>
         <Header/>
         <Sidebar/>
-        
-        <PatientDetails/>
+        <PatientDetails role={role}/>
     </section>
   )
 }

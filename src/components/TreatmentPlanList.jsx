@@ -56,7 +56,7 @@ const TreatmentPlanList = ({treatmentPlans}) => {
             ))}
             </tbody>
         </table>
-        Chu
+        
         
     </>
   )

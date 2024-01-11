@@ -2,7 +2,7 @@ import axios from 'axios';
 import React, { useEffect, useState } from 'react'
 import useAuth from '../hooks/useAuth';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faMagnifyingGlass, faSearch } from '@fortawesome/free-solid-svg-icons';
+import { faEdit, faMagnifyingGlass, faSearch, faTrash } from '@fortawesome/free-solid-svg-icons';
 import DentistList from './DentistList';
 
 const AppointmentList = ({role}) => {
@@ -14,7 +14,8 @@ const AppointmentList = ({role}) => {
     const listFilterBy = ['patient name', 'dentist', 'room'];
     const [filterOption, setFilterOption] = useState('patient name');
     const [dentists, setDentists] = useState([])
-    const [selectedDentistId, setSelectedDentistId] = useState(-1)
+    const [selectedDentistId, setSelectedDentistId] = useState(-1);
+    const [selectedAppointment, setSelectedAppointment] = useState(null)
     
     const formatDateToISO = (date) => {
         const isoDate = date.toISOString().split('T')[0];
@@ -81,6 +82,23 @@ const AppointmentList = ({role}) => {
         });
         console.log("Search result", res.data);
         setAppointments(res.data)
+    }
+    const handleDeleteAppointment = async () => {
+        try {
+            const res = await axios.delete(`http://localhost:8080/appointments/${selectedAppointment.id}`, {
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${auth.accessToken}`
+                },
+                
+            });
+            if(res.status === 200){
+                setAppointments(appointments.filter((appointment => appointment.id !== selectedAppointment.id)))
+            }
+            $('#deleteModal').modal('hide');
+        } catch (error) {
+            console.log(error)
+        }
     }
     useEffect(() => {
         fetchAppointments();
@@ -151,15 +169,15 @@ const AppointmentList = ({role}) => {
                     <tr key={appoinment.id}>
                         <td>{idx + 1}</td>
                         <td>{appoinment.patient.name}</td>
-                        <td>{appoinment.createdAt}</td>
+                        <td>{appoinment.createdAt.replace('T', ' ')}</td>
                         <td>{appoinment.dentist.name}</td>
                         <td>{appoinment?.assistant?.name}</td>
                         <td>{appoinment.room}</td>
                         <td>{appoinment.status}</td>
                         {(role.includes('ROLE_ADMIN') || role.includes('ROLE_STAFF') ) && <>
-                            <td className="edit text-center">
-                            <a href="#" className="me-4" data-bs-toggle="modal" data-bs-target="#EditModal">Edit</a>
-                                <a href="#" type="button" data-bs-toggle="modal" data-bs-target="#DeleteModal">Delete</a>
+                            <td className="edit d-flex">
+                                <div className="me-4" data-bs-toggle="modal" data-bs-target="#editModal"><FontAwesomeIcon icon={faEdit} style={{color: 'green'}}/></div>
+                                <div data-bs-toggle="modal" data-bs-target="#deleteModal" onClick={() => setSelectedAppointment(appoinment)}><FontAwesomeIcon icon={faTrash} style={{color: 'red'}}/></div>
                             </td>
                         </>}
                         
@@ -184,7 +202,7 @@ const AppointmentList = ({role}) => {
             </div>
         </div>
 
-        <div className="modal fade" id="EditModal" tabIndex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div className="modal fade" id="editModal" tabIndex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
             <div className="modal-dialog">
                 <div className="modal-content">
                     <div className="modal-header">
@@ -192,7 +210,7 @@ const AppointmentList = ({role}) => {
                         <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div className="modal-body">
-                        ...
+                        
                     </div>
                     <div className="modal-footer">
                         <button type="button" className="btn btn-secondary" data-bs-dismiss="modal">Close</button>
@@ -202,7 +220,7 @@ const AppointmentList = ({role}) => {
             </div>
         </div>
 
-        <div className="modal fade" id="DeleteModal" tabIndex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div className="modal fade" id="deleteModal" tabIndex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
             <div className="modal-dialog">
                 <div className="modal-content">
                     <div className="modal-header">
@@ -214,7 +232,7 @@ const AppointmentList = ({role}) => {
                     </div>
                     <div className="modal-footer">
                         <button type="button" className="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                        <button type="button" className="btn btn-primary">Confirm</button>
+                        <button type="button" className="btn btn-danger" onClick={handleDeleteAppointment}>Confirm</button>
                     </div>
                 </div>
             </div>

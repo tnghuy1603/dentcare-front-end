@@ -9,8 +9,6 @@ const TreatmentPlanDetails = () => {
       <div className="container-fluid">
         <div className="row justify-content-center">
           <div className="w-100 col-xs-12 col-sm-12 col-md-6 col-lg-6 col-xs-offset-0 col-sm-offset-0 col-md-offset-3 col-lg-offset-3 toppad" >
-
-
             <div className="panel panel-info">
               <div className="panel-heading text-center mb-4">
                 <h3 className="panel-title">Patient Profile</h3>
