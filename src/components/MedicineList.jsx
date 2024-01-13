@@ -11,17 +11,8 @@ const MedicineList = ({role}) => {
     const [description, setDescription] = useState('');
     const [price, setPrice] = useState(0);
     const [expireDate, setExpireDate] = useState(null)
-    // const fetchMedicines = async () => {
-    //     const res = await axios.get(`http://localhost:8080/medications`, {
-    //         headers: {
-    //             'Content-Type': 'application/json',
-    //             'Authorization': `Bearer ${auth.accessToken}`
-    //         },
-            
-    //     });
-    //     console.log("Medicines" , res.data);
-    //     setMedicines(res.data)
-    // }
+    const [selectedMedcine, setSelectedMedicine] = useState(null)
+    
     const apiUrl = 'http://localhost:8080'
     const fetchMedicines = async () => {
       try {
@@ -48,15 +39,40 @@ const MedicineList = ({role}) => {
                 'Authorization': `Bearer ${auth.accessToken}`
             },
             
+            
       });
-      $('#addModel').modal('hide');
+      $('#addModal').modal('hide');
       setMedicines([...medicines, res.data]);
+      clearInput();
+      
+    }
+    const popUpEditModal = (medicine) => {
+      setSelectedMedicine(medicine);
+      setName(medicine.name);
+      setDescription(medicine.description);
+      setExpireDate(medicine.expireDate);
+      setPrice(medicine.price);
+    }
+    const handleUpdateMedicine = async () => {
+      const medicineToUpdate = {medicineId: selectedMedcine.id, name, description, expireDate, price};
+      console.log(medicineToUpdate);
+      const res = await axios.put(`http://localhost:8080/medications/${selectedMedcine.id}`, {medicineId: selectedMedcine.id, name, description, expireDate, price}, {
+        headers: {
+          "Content-Type": "application/json",
+          "Authorization": `Bearer ${auth.accessToken}`,
+        
+        }
+      });
+      console.log("Updated Medicine", res.data);
+      setMedicines(medicines.map((medicine) => medicine.id === selectedMedcine.id ? res.data : medicine));
+      $('#editModal').modal('hide');
+    }
+    
+    const clearInput = () => {
       setName('');
       setPrice(null);
       setExpireDate(null);
       setDescription('');
-      
-      
     }
   return (
     <>
@@ -71,7 +87,7 @@ const MedicineList = ({role}) => {
                 <div className="modal-content">
                   <div className="modal-header">
                     <h1 className="modal-title fs-5" id="addModalLabel">Add Medicine</h1>
-                    <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close" onClick={clearInput}></button>
                   </div>
                   <div className="modal-body">
                     <div className="mb-3">
@@ -92,7 +108,7 @@ const MedicineList = ({role}) => {
                   
                   </div>
                   <div className="modal-footer">
-                    <button type="button" className="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="button" className="btn btn-secondary" data-bs-dismiss="modal" onClick={clearInput}>Close</button>
                     <button type="button" className="btn btn-primary" onClick={handleAddMedicine}>Add</button>
                   </div>
                 </div>
@@ -123,10 +139,11 @@ const MedicineList = ({role}) => {
             <td>{medicine.description}</td>
             <td>{medicine.price}</td>
             <td>{medicine.expireDate}</td>
+
             {role.includes('ROLE_ADMIN') &&
             <td colSpan={1} className="d-flex gap-3">
             
-              <div className="" data-bs-toggle="modal" data-bs-target="#editModal">
+              <div className="" data-bs-toggle="modal" data-bs-target="#editModal" onClick={() => popUpEditModal(medicine)}>
                 <FontAwesomeIcon icon={faEdit} style={{'color': 'green'}}/>
               </div>
               <div className="modal fade" id="editModal" tabIndex={'-1'} aria-labelledby="updateModalLabel" aria-hidden="true">
@@ -134,42 +151,34 @@ const MedicineList = ({role}) => {
                   <div className="modal-content">
                     <div className="modal-header">
                       <h1 className="modal-title fs-5" id="updateModalLabel">Update Medicine</h1>
-                      <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                      <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close" onClick={clearInput}></button>
                     </div>
                     <div className="modal-body">
-                      {/* <div className="mb-3">
-                          <label htmlFor="nameToUpdate" className="form-label">Name</label>
-                          <input type="text" className="form-control" id="nameToUpdate" onChange={(e) => setName(e.target.value)} defaultValue={patient.name}/>
-                      </div>
-                      <div className="mb-3">
-                          <label htmlFor="descriptionToUpdate" className="form-label">Description</label>
-                          <input type="text" className="form-control" id="descriptionToUpdate" onChange={(e) => setAddress(e.target.value)} defaultValue={patient.address}/>
-                      </div>
-                      <div className="mb-3">
-                          <label htmlFor="phoneNumberToUpdate" className="form-label">Phone number</label>
-                          <input type="text" className="form-control" id="phoneNumberToUpdate" onChange={(e) => setPhoneNumber(e.target.value)} defaultValue={patient.phoneNumber}/>
-                      </div>
+                      {selectedMedcine &&
+                        <div>
+                          <div className="mb-3">
+                              <label htmlFor="nameToUpdate" className="form-label">Medicine name</label>
+                              <input type="text" className="form-control" id="nameToUpdate" onChange={(e) => setName(e.target.value)} defaultValue={selectedMedcine.name}/>
+                          </div>
+                          <div className="mb-3">
+                              <label htmlFor="descriptionToUpdate" className="form-label">Description</label>
+                              <input type="text" className="form-control" id="descriptionToUpdate" onChange={(e) => setDescription(e.target.value)} defaultValue={selectedMedcine.description}/>
+                          </div>
+                          <div className="mb-3">
+                              <label htmlFor="expireDateToUpdate" className="form-label">Expire date</label>
+                              <input type="date" className="form-control" id="expireDateToUpdate" onChange={(e) => setExpireDate(e.target.value)} defaultValue={selectedMedcine.expireDate}/>
+                          </div>
+                          <div className="mb-3">
+                              <label htmlFor="expireDateToUpdate" className="form-label">Price</label>
+                              <input type="number" className="form-control" id="expireDateToUpdate" onChange={(e) => setPrice(e.target.value)} defaultValue={selectedMedcine.price}/>
+                          </div>
+                        </div>
+                      }
                       
-                      <div className="mb-3">
-                          <label htmlFor="addressToUpdate" className="form-label">Address</label>
-                          <input type="text" className="form-control" id="addressToUpdate" onChange={(e) => setAddress(e.target.value)} defaultValue={patient.address}/>
-                      </div>
-                      <div className="mb-3">
-                          <label htmlFor="emailToUpdate" className="form-label">Email address</label>
-                          <input type="email" className="form-control" id="emailToUpdate" onChange={(e) => setEmail(e.target.value)} value={patient.email}/>
-                      </div>
-                      <div className="mb-3">
-                          <label htmlFor="dobToUpdate" className="form-label">Day of brith</label>
-                          <input type="date" className="form-control" id="dobToUpdate" onChange={(e) => setDob(e.target.value)} value={patient.dob}/>
-                      </div>
-                      <div className="mb-3">
-                          <label htmlFor="emailToUpdate" className="form-label">Email address</label>
-                          <input type="email" className="form-control" id="emailToUpdate" onChange={(e) => setEmail(e.target.value)} value={patient.email}/>
-                      </div> */}
                     </div>
                     <div className="modal-footer">
-                      <button type="button" className="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                      <button type="button" className="btn btn-primary" onClick={() => handleUpdate(patient.id) }>Update</button>
+                      <button type="button" className="btn btn-secondary" data-bs-dismiss="modal" onClick={clearInput}>Close</button>
+                      <button type="button" className="btn btn-primary" onClick={handleUpdateMedicine}>Update</button>
                     </div>
                     
                   </div>

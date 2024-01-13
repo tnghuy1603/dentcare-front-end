@@ -124,6 +124,16 @@ const PatientList = ({role}) =>  {
     setName(patient.name);
     setPhoneNumber(patient.phoneNumber);
   }
+  const clearInput = () => {
+    setEmail('');
+    setName('');
+    setDob('');
+    setPassword('');
+    setAddress('');
+    setPhoneNumber('');
+    setSelectedBranchId(null);
+    setSelectedPatient(null);
+  }
   
 
   return (
@@ -181,7 +191,7 @@ const PatientList = ({role}) =>  {
           <div className="modal-content">
             <div className="modal-header">
               <h1 className="modal-title fs-5 fw-bold" id="editModalLabel">Update Patient</h1>
-              <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+              <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close" onClick={clearInput}></button>
             </div>
             <div className="modal-body">
             <div className="mb-3">
@@ -208,8 +218,8 @@ const PatientList = ({role}) =>  {
         
             </div>
             <div className="modal-footer">
-              <button type="button" className="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-              <button type="button" className="btn btn-primary" onClick={() => handleUpdate(patient.id) }>Update</button>
+              <button type="button" className="btn btn-secondary" data-bs-dismiss="modal" onClick={clearInput} >Close</button>
+              <button type="button" className="btn btn-primary" onClick={() => handleUpdate(selectedPatient.id) }>Update</button>
             </div>
           </div>
         </div>
@@ -219,7 +229,7 @@ const PatientList = ({role}) =>  {
           <div className="modal-content">
             <div className="modal-header">
               <h1 className="modal-title fs-5 fw-bold text-center" id="addPatientModelLabel">Add patient</h1>
-              <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+              <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close" onClick={clearInput}></button>
             </div>
             <div className="modal-body">
                   <div className="mb-3">
@@ -247,7 +257,7 @@ const PatientList = ({role}) =>  {
                   </select>
             </div>
             <div className="modal-footer">
-              <button type="button" className="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+              <button type="button" className="btn btn-secondary" data-bs-dismiss="modal" onClick={clearInput}>Close</button>
               <button type="button" className="btn btn-primary" onClick={handleAdd}>Add</button>
             </div>
           </div>

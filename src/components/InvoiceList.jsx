@@ -1,4 +1,4 @@
-import { faEye, faMoneyBill } from "@fortawesome/free-solid-svg-icons";
+import { faCartShopping, faEye, faMoneyBill } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import axios from "axios";
 import React, { useState } from "react";
@@ -37,7 +37,8 @@ const InvoiceList = ({invoices, updateInvoice, role}) => {
                             <th scope="col">Total</th>
                             <th scope="col">Issue at</th>
                             <th scope="col">Checkout</th>
-                            {role.includes('ROLE_STAFF') && <th scope="col">Edit</th>}
+                            <th scope="col">Edit</th>
+                            
                         </tr>
                     </thead>
                     <tbody>
@@ -48,11 +49,13 @@ const InvoiceList = ({invoices, updateInvoice, role}) => {
                                 <td>{invoice.totalFee}</td>
                                 <td>{invoice.createdAt.replace('T', " ")}</td>
                                 
-                                {(invoice.paidAmount < invoice.totalFee && role.includes('ROLE_STAFF')) ? <td>
+                                {(invoice.paidAmount < invoice.totalFee && role.includes('ROLE_STAFF')) ? 
+                                <td>
                                     <div data-bs-toggle="modal" data-bs-target="#checkoutModal">
-                                        <FontAwesomeIcon icon={faMoneyBill} style={{color: 'green'}} className="mx-3 fs-5" onClick={() => setSelectedInvoice(invoice)}/>
+                                        <FontAwesomeIcon icon={faCartShopping} style={{color: 'green'}} className="mx-3 fs-5" onClick={() => setSelectedInvoice(invoice)}/>
                                     </div>
-                                </td>: <div></div>}
+                                </td>: <td> <button className="btn btn-success">Completed</button> </td>}
+                                
                                 
                                 <td>
                                     <Link to={`/invoices/${invoice.id}`} state={{invoice}}>

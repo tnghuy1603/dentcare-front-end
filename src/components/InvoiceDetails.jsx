@@ -8,8 +8,7 @@ import useAuth from "../hooks/useAuth";
 const InvoiceDetails = () => {
   const location = useLocation();
   const auth = useAuth();
-  const invoice = location.state;
-  console.log('State', location.state);
+  const invoice = location.state.invoice
   const [treatments, setTreatments] = useState([]);
     const fetchTreatments = async () => {
       const res = await axios.get(`http://localhost:8080/treatments`, {

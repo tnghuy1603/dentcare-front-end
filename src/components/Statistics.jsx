@@ -171,8 +171,15 @@ const Statistics = () => {
             <Sidebar/>
             <div className="d-flex">
                 <h3 className="i-name">Statistics</h3>
-                <input type="date" className="ms-auto h-50 mt-5 me-5" id="fromDate" onChange={(e) => setFrom(e.target.value)}/>
-                <input type="date" className="ms-auto h-50 mt-5 me-5" id="toDate" onChange={(e) => setTo(e.target.value)}/>  
+                <div className="d-flex">
+                  <div for="fromDate" class="form-label">From</div>
+                  <input type="date" className="ms-auto h-50 mt-5 me-5 form-control" id="fromDate" onChange={(e) => setFrom(e.target.value)}/>
+                </div>
+                <div className="d-flex">
+                  <div for="toDate" class="form-label">To</div>
+                  <input type="date" className="ms-auto h-50 mt-5 me-5 form-control" id="toDate" onChange={(e) => setTo(e.target.value)}/>  
+                </div>
+                
                 <select className="form-select ms-auto h-50 mt-5 me-5 w-25" aria-label="Select dentist" onChange={(e) => setSelectedDentistId(e.target.value)}>
                     <option selected>Select dentist</option>
                     {dentists.map((a) => 

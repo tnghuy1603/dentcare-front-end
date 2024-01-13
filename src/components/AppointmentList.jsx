@@ -7,7 +7,7 @@ import DentistList from './DentistList';
 
 const AppointmentList = ({role}) => {
     const auth = useAuth()
-    const [date, setDate] = useState(new Date());
+    const [date, setDate] = useState(new Date().toISOString());
     const [appointments, setAppointments] = useState([])
     const [patientName, setPatientName] = useState('');
     const [searchQuery, setSearchQuery] = useState('');
@@ -17,23 +17,22 @@ const AppointmentList = ({role}) => {
     const [selectedDentistId, setSelectedDentistId] = useState(-1);
     const [selectedAppointment, setSelectedAppointment] = useState(null)
     
-    const formatDateToISO = (date) => {
-        const isoDate = date.toISOString().split('T')[0];
-        return isoDate;
-    };
-    console.log(formatDateToISO(date));
+    
+    
     const [room, setRoom] = useState('');
     const fetchAppointments = async () => {
-      const res = await axios.get(`http://localhost:8080/appointments/${formatDateToISO(date)}`, {
+        console.log(date);
+      const res = await axios.get(`http://localhost:8080/appointments/${date}`, {
         headers: {
             'Content-Type': 'application/json',
             'Authorization': `Bearer ${auth.accessToken}`
         }
       })
-      console.log("Status", res.status);
+      
       console.log("Appointments", res.data);
       setAppointments(res.data);
     }
+
     const fetchDentists = async() => {
         const res = await axios.get(`http://localhost:8080/users/all`, {
             headers: {
@@ -72,7 +71,8 @@ const AppointmentList = ({role}) => {
             default:
                 break;
         }
-        console.log('Params', params)
+        console.log('Params', params);
+        console.log("date", date);
         const res = await axios.get(`http://localhost:8080/appointments/${formatDateToISO(date)}`, {
             headers: {
                 'Content-Type': 'application/json',
@@ -102,10 +102,9 @@ const AppointmentList = ({role}) => {
     }
     useEffect(() => {
         fetchAppointments();
-        fetchDentists();
-    }, [])
+    }, [date])
     useEffect(() => {
-        
+        fetchDentists();
     }, [])
     
     
@@ -114,7 +113,7 @@ const AppointmentList = ({role}) => {
         
       <div className="d-flex">
         <h3 className="i-name">Manage Appointments</h3>
-            <input type="date" className='me-2 ms-auto mt-5 me-5' defaultValue={formatDateToISO}/>
+            <input type="date" className='me-2 ms-auto mt-5 me-5' defaultValue={date} onChange={(e) => setDate(e.target.value)}/>
             {(role.includes('ROLE_ADMIN') || role.includes('ROLE_STAFF')) && <button type="button" className="btn btn-info ms-auto h-50 mt-5 me-5" data-bs-toggle="modal" data-bs-target="#AddModal">Add appointment</button>
 }
         </div>

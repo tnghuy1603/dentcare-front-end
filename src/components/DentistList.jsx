@@ -108,6 +108,16 @@ const DentistList = ({role}) => {
     setPhoneNumber(dentist.phoneNumber)
     setName(dentist.name)
   }
+  const clearInput = () => {
+    setEmail('');
+    setName('');
+    setDob('');
+    setPassword('');
+    setAddress('');
+    setPhoneNumber('');
+    setSelectedBranchId(null);
+    setSelecetedDentist(null)
+  }
   const getPages = () => {
     const startPage = Math.max(currentPage - Math.floor(maxPageDisplay / 2), 1);
     const endPage = Math.min(startPage + maxPageDisplay - 1, totalPages);
@@ -117,6 +127,7 @@ const DentistList = ({role}) => {
     setCurrentPage(searchPage);
     setSearchPage('');
   }
+  
   return (
     <>
     <div className="d-flex">
@@ -161,7 +172,7 @@ const DentistList = ({role}) => {
                     <div className="modal-content">
                       <div className="modal-header">
                         <h1 className="modal-title fs-5 fw-bold" id="editModalLabel">Update dentist</h1>
-                        <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close" onClick={clearInput}></button>
                       </div>
                     <div className="modal-body">
                         <div className="mb-3">
@@ -188,7 +199,8 @@ const DentistList = ({role}) => {
                             <option selected>Select branch</option>
                             {branches.map((branch) => (
                               <>
-                                <option value={branch.id}>{branch.name}</option>
+                                {(selectedDentist && selectedDentist?.branch?.name === branch.name) ? <option value={branch.name} selected>{branch.name}</option> : <option value={branch.id} >{branch.name}</option>}
+                                
                               </>
                           ))}
                         </select>
@@ -206,7 +218,7 @@ const DentistList = ({role}) => {
           <div className="modal-content">
             <div className="modal-header">
               <h1 className="modal-title fs-5 fw-bold text-center" id="addModelLabel">Add dentist</h1>
-              <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+              <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close" onClick={clearInput}></button>
             </div>
             <form className="modal-body">
               <div className="mb-3">
@@ -244,7 +256,7 @@ const DentistList = ({role}) => {
               </select>
             </form>
             <div className="modal-footer">
-              <button type="button" className="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+              <button type="button" className="btn btn-secondary" data-bs-dismiss="modal" onClick={clearInput}>Close</button>
               <button type="button" className="btn btn-primary" onClick={addDentist}>Add</button>
             </div>
 

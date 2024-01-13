@@ -121,19 +121,7 @@ function PatientDetails({ role }) {
     setTreatmentCodes(res.data);
   };
 
-  // const getMedicines = async () => {
-  //     const res = await axios.get(`http://localhost:8080/medications`, {
-  //         headers: {
-  //             'Content-Type': 'application/json',
-  //             'Authorization': `Bearer ${auth.accessToken}`
-  //         },
-  //         // params: {
-  //         //     patient: patient.id
-  //         // }
-
-  //     })
-  //     setMedicines(res.data)
-  // }
+  
   const fetchTeeth = async () => {
     const res = await axios.get(`${apiUrl}/teeth`, {
       headers: {
@@ -229,7 +217,7 @@ function PatientDetails({ role }) {
     fetchTeeth();
     fetchSurfaces();
   }, [selectedTreatmentCategoryId]);
-  console.log("Patient", patient);
+  
   const getAge = (dob) => {
     const birthDay = new Date(dob);
     const today = new Date();
@@ -254,6 +242,7 @@ function PatientDetails({ role }) {
         },
       }
     );
+    $('#updateOralHealthModal').modal('hide')
   };
 
   const handleShowStep = (step) => {
@@ -613,7 +602,11 @@ function PatientDetails({ role }) {
                           <td>Oral health:</td>
                           <td>
                             {patient.oralHealth}
-                            <a href="">Update</a>
+                            {role.includes('ROLE_DENTIST') && 
+                            <div data-bs-toggle="modal" data-bs-target="#updateOralHealthModal"> 
+                              <FontAwesomeIcon icon={faEdit}/>
+                            </div>}
+
                           </td>
                         </tr>
 
@@ -912,6 +905,28 @@ function PatientDetails({ role }) {
           </div>
         </div>
       </div>
+      <div class="modal fade" id="updateOralHealthModal" tabindex="-1" aria-labelledby="updateOralHealthLabel" aria-hidden="true">
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h1 class="modal-title fs-5" id="updateOralHealthLabel">Update oral health</h1>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+            <div class="mb-3">
+              <label for="oralHealth" class="form-label">Oral health</label>
+              <input type="email" class="form-control" id="oralHealth" value={patient.oralHealth}/>
+            </div>
+
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+              <button type="button" class="btn btn-primary" onClick={handleUpdateOralHealth}>Change</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
     </>
   );
 }

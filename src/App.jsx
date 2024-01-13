@@ -103,7 +103,7 @@ function App() {
             } />
             <Route path='/dentist-schedules' element = {
               <PrivateRoute>
-                <ManageSchedules/>
+                <ManageSchedules role={roles[0]}/>
               </PrivateRoute>
             }>
 
